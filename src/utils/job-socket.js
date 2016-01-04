@@ -1,32 +1,32 @@
 let EventEmitter = require('eventemitter3');
 
-export default class JobSocket {
+export default class JobSocket extends EventEmitter {
     constructor(url) {
-        // setup event emitter
-        this.emitter = new EventEmitter();
+        // instantiate super EventEmitter
+        super();
 
         // setup websocket
-        this.socket = new WebSocket(url);
+        this._socket = new WebSocket(url);
 
-        this.socket.onopen = (event) => { emitter.emit('open') };
-        this.socket.onclose = (event) => { emitter.emit('close') };
-        this.socket.onmessage = this._onMessage.bind(this);
-        this.socket.onerror = this._onError.bind(this);
+        this._socket.onopen = (event) => { this.emit('open') };
+        this._socket.onclose = (event) => { this.emit('close') };
+        this._socket.onmessage = this._onMessage.bind(this);
+        this._socket.onerror = this._onError.bind(this);
 
         // expose emitter on event (so peeps can subscribe)
-        this.on = emitter.on;
+        //this.on = this.emitter.on;
     }
 
     _onError(event) {
-        this.emitter.emit('error', JSON.parse(event.data));
+        this.emit('error', JSON.parse(event.data));
     }
 
     _onMessage(event) {
-        let msg = JSON.parse(event);
+        let msg = JSON.parse(event.data);
 
         // manage pings so the rest of the app doesn't have to
         if (msg.type === 'ping') {
-            this.send({
+            this._socket.send({
                 type: 'pong'
             });
 
@@ -45,12 +45,12 @@ export default class JobSocket {
             });
         }
 
-        this.emitter.emit('message', msg);
+        this.emit('message', msg);
     }
 
     close() {
-        this.socket.close();
-        this.socket = null;
+        this._socket.close();
+        this._socket = null;
     }
 
 }

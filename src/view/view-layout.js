@@ -23,7 +23,7 @@ class ViewLayout extends Component {
     }
 
     render() {
-        let { sinks, sinkLayout, job } = this.props;
+        let { sinks, sinkLayout, job_id } = this.props;
         let rows = sinkLayout.map((sinkRow, index) => {
             return (
                 <div className="flex-row" key={index}>
@@ -32,8 +32,16 @@ class ViewLayout extends Component {
             )
         })
 
+        if (!job_id) {
+            return (
+                <div className="juttle-view sink-views">
+                    <p>Nothing to see here</p>
+                </div>
+            );
+        }
+
         return (
-            <div className="juttle-view sink-views" key={job.job_id}>
+            <div className="juttle-view sink-views" key={job_id}>
                 {rows}
             </div>
         );

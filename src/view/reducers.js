@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 
-import { JOB_START } from './actions';
+import { JOB_START, JOB_CREATED } from './actions';
 
 function sinks(state = new Map(), action) {
     switch (action.type)    {
@@ -12,11 +12,21 @@ function sinks(state = new Map(), action) {
             })
 
             return sinks
+        default:
+            return state;
     }
+}
 
-    return state
+function job_id(state = null, action) {
+    switch (action.type) {
+        case JOB_CREATED:
+            return action.job_id;
+        default:
+            return state;
+    }
 }
 
 export default combineReducers({
-    sinks
+    sinks,
+    job_id
 });

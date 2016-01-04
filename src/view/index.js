@@ -9,6 +9,7 @@ import reducers from './reducers';
 import * as api from '../utils/api';
 import JobSocket from '../utils/job-socket';
 import EventEmitter from 'eventemitter3';
+import { jobCreated } from './actions';
 
 export default class View {
     constructor(outriggerUrl, el) {
@@ -35,7 +36,8 @@ export default class View {
 
         return api.runJob(bundle, inputValues)
         .then(job => {
-            let jobSocket = new JobSocket(`${self.outriggerUrl}`)
+            this.store.dispatch(jobCreated(job.job_id));
+            let jobSocket = new JobSocket(`ws://${self.outriggerUrl}/api/v0/jobs/${job.job_id}`)
 
             jobSocket.on('message', msg => {
                 console.log(msg);
