@@ -3,7 +3,7 @@ import { combineReducers } from 'redux';
 import { JOB_START, JOB_CREATED } from './actions';
 
 function sinks(state = new Map(), action) {
-    switch (action.type)    {
+    switch (action.type) {
         case JOB_START:
             let sinks = new Map()
 

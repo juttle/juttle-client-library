@@ -32,14 +32,14 @@ class Sink extends Component {
         let ViewConstructor = SinkRegistry[this.props.sink.type];
 
         if (ViewConstructor) {
-            this.componentChart = new ViewConstructor(sinkConstructorOptions, this.props.sinks);
+            this.componentChart = new ViewConstructor(sinkConstructorOptions, this.props.componentCharts);
         }
         else {
             this.componentChart = null;
         }
 
         if (this.componentChart) {
-            SinkStore.add(this.componentChart);
+            this.props.addComponentChart(this.componentChart);
         }
 
         this.props.jobEvents.on(this.props.sink.sink_id, this.handleSinkMsg, this);

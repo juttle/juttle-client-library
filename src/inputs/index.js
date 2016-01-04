@@ -34,4 +34,11 @@ export default class Input {
             this.store.dispatch(updateInputDefs(inputs));
         })
     }
+
+    getValues() {
+        return this.store.getState().inputs.reduce((result, input) => {
+            result[input.id] = input.value;
+            return result;
+        }, {});
+    }
 }

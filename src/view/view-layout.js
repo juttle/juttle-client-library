@@ -5,8 +5,29 @@ import { connect } from 'react-redux';
 import Sink from './sink';
 import sinkLayoutGen from './sink-layout-gen';
 
+class View extends Component {
+    render() {
+        if (this.props.job_id) {
+            return (
+                <ViewLayout {...this.props} />
+            )
+        }
+
+        return false;
+    }
+}
+
 class ViewLayout extends Component {
+    componentWillMount() {
+        this.componentCharts = [];
+    }
+
+    addComponentChart(componentChart) {
+        this.componentCharts.push(componentChart);
+    }
+
     generateViewColumns(sinkCols) {
+        let self = this;
         let { jobEvents, sinks } = this.props;
 
         return sinkCols.map(sinkCol => {
@@ -17,6 +38,8 @@ class ViewLayout extends Component {
                     sinks={sinks}
                     width={100 / sinkCols.length}
                     jobEvents={jobEvents}
+                    addComponentChart={self.addComponentChart.bind(self)}
+                    componentCharts={self.componentCharts}
                     key={sink.sink_id}/>
             )
         });
@@ -32,14 +55,6 @@ class ViewLayout extends Component {
             )
         })
 
-        if (!job_id) {
-            return (
-                <div className="juttle-view sink-views">
-                    <p>Nothing to see here</p>
-                </div>
-            );
-        }
-
         return (
             <div className="juttle-view sink-views" key={job_id}>
                 {rows}
@@ -54,7 +69,7 @@ export default connect(
         return {
             sinks: state.sinks,
             sinkLayout: sinkLayoutGen(state.sinks),
-            job: state.job
+            job_id: state.job_id
         };
     }
-)(ViewLayout)
+)(View)
