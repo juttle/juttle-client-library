@@ -6,16 +6,7 @@ import thunk from 'redux-thunk' // allows for async actions
 
 import Input from './inputs';
 import View from './view';
-import reducers from './reducers';
-import jobMiddleware from './middleware/job-socket';
 import * as api from './utils/api';
-
-import {
-    updateProgram,
-    updateModules,
-    runBundle,
-    updateInputDefs
-} from './actions';
 
 import './sass/main.scss'
 
