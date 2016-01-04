@@ -1,8 +1,29 @@
 import Juttle from '../src';
 
+let program = `
+    input name: text;
+
+    emit -limit 1000
+    | put val = Math.random()
+    | put name = name
+    | (
+        view timechart -o {
+            id: 'tim',
+            valueField: 'val',
+            row: 0
+        };
+        filter val > 0.5
+        | view events -o {
+            title: 'above .50',
+            on: 'tim'
+        };
+        keep val
+        | view table -row 0;
+    )`;
+
 let client = new Juttle('localhost:8080');
 let bundle = {
-    program: "const name = 'hi'; emit -limit 1000 | put name=name;"
+    program
 };
 
 
@@ -11,12 +32,5 @@ let inputs = new client.Input(document.getElementById('inputs'));
 inputs.render(bundle);
 
 document.getElementById('btn-run').addEventListener('click', e => {
-    view.run(bundle);
+    view.run(bundle, inputs.getValues());
 });
-
-// client.describe(bundle)
-// .then(res => {
-//     console.log(res);
-//     if (res.inputs.length > 0) {
-//     }
-// });
