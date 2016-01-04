@@ -12,9 +12,6 @@ export default class JobSocket extends EventEmitter {
         this._socket.onclose = (event) => { this.emit('close') };
         this._socket.onmessage = this._onMessage.bind(this);
         this._socket.onerror = this._onError.bind(this);
-
-        // expose emitter on event (so peeps can subscribe)
-        //this.on = this.emitter.on;
     }
 
     _onError(event) {
