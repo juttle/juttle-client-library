@@ -8,11 +8,11 @@ export default class OutriggerHttp {
             throw new Error('Url scheme must be \'http\' or \'https\'');
         }
 
-        this.outriggerUrl = outriggerUrl;
+        this.url = `${outriggerUrl}${API_PREFIX}/`;
     }
 
     getInputs(bundle, inputs) {
-        return fetch(`${this.outriggerUrl}${API_PREFIX}/prepare`, {
+        return fetch(`${this.url}prepare`, {
             method: "post",
             headers: {
                 'Content-Type': 'application/json'
@@ -26,7 +26,7 @@ export default class OutriggerHttp {
     }
 
     runJob(bundle, inputs) {
-        return fetch(`${this.outriggerUrl}${API_PREFIX}/jobs`, {
+        return fetch(`${this.url}jobs`, {
             method: 'post',
             headers: {
                 'Accept': 'application/json',
@@ -41,12 +41,12 @@ export default class OutriggerHttp {
     };
 
     getJob(jobId) {
-        return fetch(`${this.outriggerUrl}${API_PREFIX}/jobs/${jobId}`)
+        return fetch(`${this.url}jobs/${jobId}`)
         .then(res => res.json());
     };
 
     getBundle(path) {
-        return fetch(`${this.outriggerUrl}${API_PREFIX}/paths${path}`)
+        return fetch(`${this.url}paths${path}`)
         .then(res => res.json());
     };
 }
