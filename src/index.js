@@ -6,12 +6,13 @@ import thunk from 'redux-thunk' // allows for async actions
 
 import Input from './inputs';
 import View from './view';
-import * as api from './utils/api';
+import OutriggerAPI from './utils/api';
 
 import './sass/main.scss'
 
 export default function Juttle(outriggerUrl) {
     this.outriggerUrl = outriggerUrl;
+    this.api = new OutriggerAPI(`http://${outriggerUrl}`);
 
     /*
      * Describe the views and inputs for a bundle

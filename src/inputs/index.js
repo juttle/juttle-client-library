@@ -7,11 +7,12 @@ import thunk from 'redux-thunk' // allows for async actions
 import { updateInputDefs } from './actions';
 import InputGroup from './input-group';
 import reducers from './reducers';
-import * as api from '../utils/api';
+import OutriggerAPI from '../utils/api';
 
 export default class Input {
     constructor(outriggerUrl, el) {
 
+        this.api = new OutriggerAPI(`http://${outriggerUrl}`);
         this.el = el;
 
         const store = compose(
@@ -29,7 +30,7 @@ export default class Input {
     }
 
     render(bundle) {
-        return api.getInputs(bundle)
+        return this.api.getInputs(bundle)
         .then(inputs => {
             this.store.dispatch(updateInputDefs(inputs));
         })

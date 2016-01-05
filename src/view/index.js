@@ -6,7 +6,7 @@ import thunk from 'redux-thunk' // allows for async actions
 
 import ViewLayout from './view-layout';
 import reducers from './reducers';
-import * as api from '../utils/api';
+import OutriggerAPI from '../utils/api';
 import JobSocket from '../utils/job-socket';
 import EventEmitter from 'eventemitter3';
 import { jobCreated, jobStart } from './actions';
@@ -15,6 +15,7 @@ export default class View {
     constructor(outriggerUrl, el) {
         this.el = el;
         this.outriggerUrl = outriggerUrl;
+        this.api = new OutriggerAPI(`http://${outriggerUrl}`);
         this.jobEvents = new EventEmitter();
 
         const store = compose(
@@ -35,7 +36,7 @@ export default class View {
         let self = this;
         let { dispatch } = this.store;
 
-        return api.runJob(bundle, inputValues)
+        return this.api.runJob(bundle, inputValues)
         .then(job => {
             dispatch(jobCreated(job.job_id));
 
