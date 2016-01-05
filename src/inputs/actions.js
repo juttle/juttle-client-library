@@ -4,8 +4,8 @@ export const INPUT_VALUE_UPDATE = 'INPUT_VALUE_UPDATE'
 export function updateInput(input_id, value) {
     return {
         type: INPUT_VALUE_UPDATE,
-        input_id: input_id,
-        value: value
+        input_id,
+        value
     };
 }
 
