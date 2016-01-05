@@ -3,9 +3,11 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import InputContainer from './components/input-container';
 
+const ENTER_KEY = 13;
+
 class InputGroup extends Component {
     _onKeyUp = (e) => {
-        if (e.keyCode === 13 && e.shiftKey) {
+        if (e.keyCode === ENTER_KEY && e.shiftKey) {
             this.props.onRun();
         }
     }
