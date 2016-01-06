@@ -1,5 +1,5 @@
-export const JOB_START = 'JOB_START';
-export const JOB_CREATED = 'JOB_CREATED';
+export const JOB_START = "JOB_START";
+export const JOB_CREATED = "JOB_CREATED";
 
 export function jobCreated(job_id) {
     return {

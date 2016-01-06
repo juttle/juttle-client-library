@@ -1,4 +1,4 @@
-import Juttle from '../src';
+import Juttle from "../src";
 
 let program = `
     input name: text;
@@ -21,16 +21,16 @@ let program = `
         | view table -row 0;
     )`;
 
-let client = new Juttle('localhost:8080');
+let client = new Juttle("localhost:8080");
 let bundle = {
     program
 };
 
 
-let view = new client.View(document.getElementById('views'));
-let inputs = new client.Input(document.getElementById('inputs'));
+let view = new client.View(document.getElementById("views"));
+let inputs = new client.Input(document.getElementById("inputs"));
 inputs.render(bundle);
 
-document.getElementById('btn-run').addEventListener('click', e => {
+document.getElementById("btn-run").addEventListener("click", () => {
     view.run(bundle, inputs.getValues());
 });

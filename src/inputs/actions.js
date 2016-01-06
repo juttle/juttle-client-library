@@ -1,5 +1,5 @@
-export const INPUT_DEFS_UPDATE = 'INPUT_DEFS_UPDATE'
-export const INPUT_VALUE_UPDATE = 'INPUT_VALUE_UPDATE'
+export const INPUT_DEFS_UPDATE = "INPUT_DEFS_UPDATE";
+export const INPUT_VALUE_UPDATE = "INPUT_VALUE_UPDATE";
 
 export function updateInput(input_id, value) {
     return {
