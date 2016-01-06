@@ -1,4 +1,4 @@
-let EventEmitter = require('eventemitter3');
+let EventEmitter = require("eventemitter3");
 
 export default class JobSocket extends EventEmitter {
     constructor(url) {
@@ -8,41 +8,41 @@ export default class JobSocket extends EventEmitter {
         // setup websocket
         this._socket = new WebSocket(url);
 
-        this._socket.onopen = (event) => { this.emit('open') };
-        this._socket.onclose = (event) => { this.emit('close') };
+        this._socket.onopen = (event) => { this.emit("open"); };
+        this._socket.onclose = (event) => { this.emit("close"); };
         this._socket.onmessage = this._onMessage.bind(this);
         this._socket.onerror = this._onError.bind(this);
     }
 
     _onError(event) {
-        this.emit('error', JSON.parse(event.data));
+        this.emit("error", JSON.parse(event.data));
     }
 
     _onMessage(event) {
         let msg = JSON.parse(event.data);
 
         // manage pings so the rest of the app doesn't have to
-        if (msg.type === 'ping') {
+        if (msg.type === "ping") {
             this._socket.send({
-                type: 'pong'
+                type: "pong"
             });
 
             return;
         }
 
-        if (msg.hasOwnProperty('time')) {
+        if (msg.hasOwnProperty("time")) {
             msg.time = new Date(msg.time);
         }
 
-        if (msg.hasOwnProperty('points')) {
+        if (msg.hasOwnProperty("points")) {
             msg.points.forEach(point => {
-                if (point.hasOwnProperty('time')) {
+                if (point.hasOwnProperty("time")) {
                     point.time = new Date(point.time);
                 }
             });
         }
 
-        this.emit('message', msg);
+        this.emit("message", msg);
     }
 
     close() {

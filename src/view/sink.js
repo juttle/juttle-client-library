@@ -1,22 +1,24 @@
-import _ from 'underscore';
-import React, { Component } from 'react'
-import SinkRegistry from './sink-registry';
+import _ from "underscore";
+import React, { Component } from "react";
+import SinkRegistry from "./sink-registry";
 
 class Sink extends Component {
     handleSinkMsg(msg) {
         switch (msg.type) {
-            case 'points':
+
+            case "points":
                 this.componentChart.consume(msg.points);
-                break
-            case 'mark':
+                break;
+            case "mark":
                 this.componentChart.consume_mark(msg.time);
                 break;
-            case 'tick':
+            case "tick":
                 this.componentChart.consume_tick(msg.time);
                 break;
-            case 'sink_end':
+            case "sink_end":
                 this.componentChart.consume_eof();
                 break;
+
         }
     }
 
@@ -46,7 +48,7 @@ class Sink extends Component {
     }
 
     componentDidMount() {
-        window.addEventListener('resize', this._setChartDimensions.bind(this));
+        window.addEventListener("resize", this._setChartDimensions.bind(this));
 
         setTimeout(() => {
             if (this.componentChart.visuals) {
@@ -57,9 +59,7 @@ class Sink extends Component {
     }
 
     componentWillUnmount() {
-        SinkEvents.removeSink(this.props.sink.sink_id);
-        SinkStore.delete(this.componentChart);
-        window.removeEventListener('resize', this._setChartDimensions);
+        window.removeEventListener("resize", this._setChartDimensions);
     }
 
     _setChartDimensions() {
@@ -67,12 +67,12 @@ class Sink extends Component {
     }
 
     render() {
-        let style = { width: this.props.width + '%' };
+        let style = { width: this.props.width + "%" };
 
         return (
             <div className="flex-col" style={style} ref="chartParent"></div>
-        )
+        );
     }
 }
 
-export default Sink
+export default Sink;

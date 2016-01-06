@@ -1,9 +1,9 @@
-import _ from 'underscore';
+import _ from "underscore";
 
 // handle undefined cols or rows
 let compare = (a, b) => {
     if (a === b) {
-        return 0
+        return 0;
     } else if (!_.isNumber(a)) {
         return 1;
     } else if (!_.isNumber(b)) {
@@ -11,7 +11,7 @@ let compare = (a, b) => {
     } else {
         return a - b;
     }
-}
+};
 
 export default (sinks) => {
     if (!sinks) { return []; }
@@ -19,11 +19,11 @@ export default (sinks) => {
 
     // group by row number, concat unspecified at end of array
     let groupSinks = _.groupBy(sinkArr, sink => {
-        return _.isNumber(sink.options.row) ? sink.options.row : 'noRowSpecified';
+        return _.isNumber(sink.options.row) ? sink.options.row : "noRowSpecified";
     });
 
-    let noRow = groupSinks['noRowSpecified'] || [];
-    delete groupSinks['noRowSpecified'];
+    let noRow = groupSinks["noRowSpecified"] || [];
+    delete groupSinks["noRowSpecified"];
 
     sinkArr = _.values(groupSinks);
 
@@ -50,4 +50,4 @@ export default (sinks) => {
 
         return arr;
     });
-}
+};

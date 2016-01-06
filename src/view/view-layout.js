@@ -1,16 +1,15 @@
-import _ from 'underscore';
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React, { Component } from "react";
+import { connect } from "react-redux";
 
-import Sink from './sink';
-import sinkLayoutGen from './sink-layout-gen';
+import Sink from "./sink";
+import sinkLayoutGen from "./sink-layout-gen";
 
 class View extends Component {
     render() {
         if (this.props.job_id) {
             return (
                 <ViewLayout {...this.props} key={this.props.job_id} />
-            )
+            );
         }
 
         return false;
@@ -41,19 +40,19 @@ class ViewLayout extends Component {
                     addComponentChart={self.addComponentChart.bind(self)}
                     componentCharts={self.componentCharts}
                     key={sink.sink_id}/>
-            )
+            );
         });
     }
 
     render() {
-        let { sinks, sinkLayout } = this.props;
+        let { sinkLayout } = this.props;
         let rows = sinkLayout.map((sinkRow, index) => {
             return (
                 <div className="flex-row" key={index}>
                     {this.generateViewColumns(sinkRow)}
                 </div>
-            )
-        })
+            );
+        });
 
         return (
             <div className="juttle-view sink-views">
@@ -72,4 +71,4 @@ export default connect(
             job_id: state.job_id
         };
     }
-)(View)
+)(View);

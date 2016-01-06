@@ -1,4 +1,4 @@
-import JuttleViz from 'juttle-viz';
+import JuttleViz from "juttle-viz";
 
 const SINK_REGISTRY = {
     barchart: JuttleViz.Barchart,
@@ -11,7 +11,7 @@ const SINK_REGISTRY = {
     less: JuttleViz.Less,
     events: JuttleViz.Events,
     file: JuttleViz.File,
-    timechartvizjs: JuttleViz.TimechartVizJs,
+    timechartvizjs: JuttleViz.TimechartVizJs
 };
 
 export default SINK_REGISTRY;
