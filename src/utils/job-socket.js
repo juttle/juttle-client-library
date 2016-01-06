@@ -8,8 +8,8 @@ export default class JobSocket extends EventEmitter {
         // setup websocket
         this._socket = new WebSocket(url);
 
-        this._socket.onopen = () => { this.emit("open"); };
-        this._socket.onclose = () => { this.emit("close"); };
+        this._socket.onopen = (event) => { this.emit("open"); };
+        this._socket.onclose = (event) => { this.emit("close"); };
         this._socket.onmessage = this._onMessage.bind(this);
         this._socket.onerror = this._onError.bind(this);
     }
