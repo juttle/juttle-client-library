@@ -3,6 +3,12 @@
   "version": "0.1.1",
   "description": "",
   "main": "lib/index.js",
+  "files": [
+    "dist",
+    "lib",
+    "src",
+    "sass"
+  ],
   "scripts": {
     "clean": "rimraf dist lib",
     "build:umd": "webpack src/index.js dist/juttle-client-library.js",
