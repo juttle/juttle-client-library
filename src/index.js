@@ -2,8 +2,6 @@ import Input from "./inputs";
 import View from "./view";
 import OutriggerAPI from "./utils/api";
 
-import "./sass/main.scss";
-
 export default function Juttle(outriggerUrl) {
     this.outriggerUrl = outriggerUrl;
     this.api = new OutriggerAPI(`http://${outriggerUrl}`);
