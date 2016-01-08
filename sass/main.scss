@@ -1,4 +1,4 @@
-.juttle-view {
+.juttle-client-library {
     // include juttle-viz css
     @import "../node_modules/juttle-viz/styles/charts";
     @import "flexbox";
@@ -16,7 +16,9 @@
 
     .flex-col {
         @include flex-grow(1);
-        margin: 5px;
+        &:not(:last-child) {
+            margin-right: 10px;
+        }
     }
 
     .form-control {

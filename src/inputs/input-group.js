@@ -18,7 +18,7 @@ class InputGroup extends Component {
         }
 
         return (
-            <div onKeyUp={this._onKeyUp} className="juttle-view inputs-view">
+            <div onKeyUp={this._onKeyUp} className="juttle-client-library inputs-view">
                 {inputs.map((input) => <InputContainer key={input.id} input={input} />)}
             </div>
         );
