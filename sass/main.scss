@@ -1,7 +1,6 @@
-
 .juttle-view {
     // include juttle-viz css
-    @import "~juttle-viz/styles/charts";
+    @import "../node_modules/juttle-viz/styles/charts";
     @import "flexbox";
     @import "variables";
 

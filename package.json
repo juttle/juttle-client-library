@@ -2,9 +2,15 @@
   "name": "juttle-client-library",
   "version": "0.1.0",
   "description": "",
-  "main": "index.js",
+  "main": "lib/index.js",
   "scripts": {
-    "lint": "eslint src example"
+    "clean": "rimraf dist lib",
+    "build:umd": "webpack src/index.js dist/juttle-client-library.js",
+    "build:css": "node-sass sass/main.scss dist/juttle-client-library.css",
+    "build:lib": "babel src --out-dir lib",
+    "build": "npm run build:lib && npm run build:umd && npm run build:css",
+    "lint": "eslint src example",
+    "prepublish": "npm run clean && npm run build"
   },
   "repository": {
     "type": "git",
@@ -17,6 +23,7 @@
   },
   "homepage": "https://github.com/juttle/juttle-client-library#readme",
   "devDependencies": {
+    "babel-cli": "^6.4.0",
     "babel-core": "^6.3.21",
     "babel-eslint": "^5.0.0-beta6",
     "babel-loader": "^6.2.0",
@@ -30,6 +37,7 @@
     "extract-text-webpack-plugin": "^0.9.1",
     "json-loader": "^0.5.4",
     "node-sass": "^3.4.2",
+    "rimraf": "^2.5.0",
     "sass-loader": "^3.1.2",
     "style-loader": "^0.13.0",
     "webpack": "^1.12.9",
