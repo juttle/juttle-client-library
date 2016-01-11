@@ -11,8 +11,12 @@ class InputContainer extends Component {
     render() {
         let { input } = this.props;
         let ReactComponent = InputTypes[input.type];
+
+        let label = input.options.label ? <label>{input.options.label}</label> : false;
+
         return (
             <div data-input-id={input.id} data-input-label={input.options.label}>
+                {label}
                 <ReactComponent input={input} inputUpdate={this.inputUpdate.bind(this)}/>
             </div>
         );

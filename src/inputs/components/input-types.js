@@ -11,11 +11,8 @@ class TextInput extends Component {
         let { value, options } = this.props.input;
         let currentValue = value ? value : "";
 
-        let label = options.label ? <label>{options.label}</label> : false;
-
         return (
             <div className="form-group">
-                { label }
                 <input
                     type={this.getType()}
                     className="form-control"
