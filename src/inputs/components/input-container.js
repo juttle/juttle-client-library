@@ -1,11 +1,11 @@
 import React, { Component, PropTypes } from "react";
 import InputTypes from "./input-types";
-import { updateInput } from "../actions";
+import * as ActionCreators from "../actions";
 import { connect } from "react-redux";
 
 class InputContainer extends Component {
     inputUpdate(newValue) {
-        this.props.dispatch(updateInput(this.props.input.id, newValue));
+        this.props.dispatch(ActionCreators.updateInputValue(this.props.input.id, newValue));
     }
 
     render() {
