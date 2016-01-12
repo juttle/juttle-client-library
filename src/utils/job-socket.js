@@ -42,6 +42,20 @@ export default class JobSocket extends EventEmitter {
             });
         }
 
+        if (msg.hasOwnProperty("sinks")) {
+            msg.sinks.forEach((sink) => {
+                sink.options._jut_time_bounds.forEach((timeBound) => {
+                    if (timeBound.from) {
+                        timeBound.from = new Date(timeBound.from);
+                    }
+
+                    if (timeBound.to) {
+                        timeBound.to = new Date(timeBound.to);
+                    }
+                });
+            });
+        }
+
         this.emit("message", msg);
     }
 
