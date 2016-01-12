@@ -12,7 +12,6 @@ import OutriggerAPI from "../utils/api";
 export default class Input {
     constructor(outriggerUrl, el) {
 
-        this.api = new OutriggerAPI(`http://${outriggerUrl}`);
         this.el = el;
 
         const store = compose(
@@ -22,6 +21,8 @@ export default class Input {
         this.store = store;
 
         store.dispatch(ActionCreators.updateOutriggerUrl(`http://${outriggerUrl}`));
+
+        this.api = new OutriggerAPI(store.getState().outriggerUrl);
 
         render(
             <Provider store={this.store}>

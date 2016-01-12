@@ -43,11 +43,10 @@ describe("Action Creators", () => {
             }
         ];
 
-        const action = {
+        const expectedActions = [{
             type: "INPUT_DEFS_UPDATE",
             payload: mockResponseBody
-        };
-        const expectedActions = [action];
+        }];
 
         nock(outriggerUrl)
         .post("/api/v0/prepare", {
