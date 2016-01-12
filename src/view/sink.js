@@ -60,6 +60,7 @@ class Sink extends Component {
 
     componentWillUnmount() {
         window.removeEventListener("resize", this._setChartDimensions);
+        this.props.jobEvents.removeListener(this.props.sink.sink_id, this.handleSinkMsg, this);
     }
 
     _setChartDimensions() {

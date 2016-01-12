@@ -36,18 +36,33 @@ export default class View {
         let self = this;
         let { dispatch } = this.store;
 
+        // incase we're currently running a job, stop the old one
+        this.stop();
+
         return this.api.runJob(bundle, inputValues)
         .then(job => {
             dispatch(jobCreated(job.job_id));
 
-            let jobSocket = new JobSocket(`ws://${self.outriggerUrl}/api/v0/jobs/${job.job_id}`);
-            jobSocket.on("message", msg => {
-                if (msg.type === "job_start") {
-                    dispatch(jobStart(msg.sinks));
-                } else {
-                    self.jobEvents.emit(msg.sink_id, msg);
-                }
-            });
+            self._jobSocket = new JobSocket(`ws://${self.outriggerUrl}/api/v0/jobs/${job.job_id}`);
+            self._jobSocket.on("message", self._onMessage, self);
         });
+    }
+
+    _onMessage(msg) {
+        let { dispatch } = this.store;
+
+        if (msg.type === "job_start") {
+            dispatch(jobStart(msg.sinks));
+        } else {
+            this.jobEvents.emit(msg.sink_id, msg);
+        }
+    }
+
+    stop() {
+        if (this._jobSocket) {
+            this._jobSocket.close();
+            this._jobSocket.removeListener("message", this._onMessage, this);
+            this._jobSocket = null;
+        }
     }
 }
