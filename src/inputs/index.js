@@ -4,7 +4,7 @@ import { compose, createStore, applyMiddleware } from "redux";
 import { Provider } from "react-redux";
 import thunk from "redux-thunk"; // allows for async actions
 
-import { updateInputDefs } from "./actions";
+import * as ActionCreators from "./actions";
 import InputGroup from "./input-group";
 import reducers from "./reducers";
 import OutriggerAPI from "../utils/api";
@@ -12,7 +12,6 @@ import OutriggerAPI from "../utils/api";
 export default class Input {
     constructor(outriggerUrl, el) {
 
-        this.api = new OutriggerAPI(`http://${outriggerUrl}`);
         this.el = el;
 
         const store = compose(
@@ -20,6 +19,10 @@ export default class Input {
         )(createStore)(reducers);
 
         this.store = store;
+
+        store.dispatch(ActionCreators.updateOutriggerUrl(`http://${outriggerUrl}`));
+
+        this.api = new OutriggerAPI(store.getState().outriggerUrl);
 
         render(
             <Provider store={this.store}>
@@ -30,9 +33,10 @@ export default class Input {
     }
 
     render(bundle) {
+        this.store.dispatch(ActionCreators.updateBundle(bundle));
         return this.api.getInputs(bundle)
         .then(inputs => {
-            this.store.dispatch(updateInputDefs(inputs));
+            this.store.dispatch(ActionCreators.updateInputDefs(inputs));
         });
     }
 
