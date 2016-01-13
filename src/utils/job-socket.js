@@ -14,12 +14,12 @@ export default class JobSocket {
         this._socket.onerror = this._onError.bind(this);
     }
 
-    on(event, listener, context) {
-        this._emitter.on(event, listener, context);
+    on(event, fn, context) {
+        this._emitter.on(event, fn, context);
     }
 
-    send(msg) {
-        this._socket.send(JSON.stringify(msg));
+    once(event, fn, context) {
+        this._emitter.once(event, fn, context);
     }
 
     removeListener(event, fn, context, once) {
@@ -28,6 +28,10 @@ export default class JobSocket {
 
     removeAllListeners(event) {
         this._emitter.removeAllListeners(event);
+    }
+
+    send(msg) {
+        this._socket.send(JSON.stringify(msg));
     }
 
     _onError(event) {
@@ -76,8 +80,14 @@ export default class JobSocket {
     }
 
     close() {
-        this._socket.close();
-        this._socket = null;
+        let self = this;
+
+        // use es6 Promise for now, but we might want to use Bluebird instead
+        // problem is, there's no good way to override Promise in whatwg-fetch
+        return new Promise((resolve, reject) => {
+            self._socket.onclose = resolve;
+            self._socket.close();
+        });
     }
 
 }

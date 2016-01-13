@@ -33,18 +33,29 @@ export default class View {
     }
 
     run(bundle, inputValues) {
+        // prevent rerunning until current run is complete
+        if (this._starting) {
+            return;
+        }
+
+        this._starting = true;
+
         let self = this;
         let { dispatch } = this.store;
 
         // incase we're currently running a job, stop the old one
-        this.stop();
-
-        return this.api.runJob(bundle, inputValues)
+        return this.stop()
+        .then(() => {
+            return self.api.runJob(bundle, inputValues);
+        })
         .then(job => {
             dispatch(jobCreated(job.job_id));
 
             self._jobSocket = new JobSocket(`ws://${self.outriggerUrl}/api/v0/jobs/${job.job_id}`);
             self._jobSocket.on("message", self._onMessage, self);
+            self._jobSocket.on("close", self._onClose, self);
+
+            self._starting = false;
         });
     }
 
@@ -58,11 +69,17 @@ export default class View {
         }
     }
 
+    _onClose() {
+        this._jobSocket.removeListener("message", this._onMessage, this);
+        this._jobSocket.removeListener("close", this._onClose, this);
+        this._jobSocket = null;
+    }
+
     stop() {
         if (this._jobSocket) {
-            this._jobSocket.close();
-            this._jobSocket.removeListener("message", this._onMessage, this);
-            this._jobSocket = null;
+            return this._jobSocket.close();
         }
+        
+        return Promise.resolve();
     }
 }
