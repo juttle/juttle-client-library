@@ -33,21 +33,53 @@ export default class View {
     }
 
     run(bundle, inputValues) {
+        // prevent rerunning until current run is complete
+        if (this._starting) {
+            return;
+        }
+
+        this._starting = true;
+
         let self = this;
         let { dispatch } = this.store;
 
-        return this.api.runJob(bundle, inputValues)
+        // incase we're currently running a job, stop the old one
+        return this.stop()
+        .then(() => {
+            return self.api.runJob(bundle, inputValues);
+        })
         .then(job => {
             dispatch(jobCreated(job.job_id));
 
-            let jobSocket = new JobSocket(`ws://${self.outriggerUrl}/api/v0/jobs/${job.job_id}`);
-            jobSocket.on("message", msg => {
-                if (msg.type === "job_start") {
-                    dispatch(jobStart(msg.sinks));
-                } else {
-                    self.jobEvents.emit(msg.sink_id, msg);
-                }
-            });
+            self._jobSocket = new JobSocket(`ws://${self.outriggerUrl}/api/v0/jobs/${job.job_id}`);
+            self._jobSocket.on("message", self._onMessage, self);
+            self._jobSocket.on("close", self._onClose, self);
+
+            self._starting = false;
         });
+    }
+
+    _onMessage(msg) {
+        let { dispatch } = this.store;
+
+        if (msg.type === "job_start") {
+            dispatch(jobStart(msg.sinks));
+        } else {
+            this.jobEvents.emit(msg.sink_id, msg);
+        }
+    }
+
+    _onClose() {
+        this._jobSocket.removeListener("message", this._onMessage, this);
+        this._jobSocket.removeListener("close", this._onClose, this);
+        this._jobSocket = null;
+    }
+
+    stop() {
+        if (this._jobSocket) {
+            return this._jobSocket.close();
+        }
+        
+        return Promise.resolve();
     }
 }

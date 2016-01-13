@@ -36,3 +36,7 @@ inputs.render(bundle);
 document.getElementById("btn-run").addEventListener("click", () => {
     view.run(bundle, inputs.getValues());
 });
+
+document.getElementById("btn-stop").addEventListener("click", () => {
+    view.stop();
+});
