@@ -1,10 +1,11 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import _ from "underscore";
 
-import Sink from "./sink";
-import sinkLayoutGen from "./sink-layout-gen";
+import View from "./view";
+import viewLayoutGen from "./view-layout-gen";
 
-class View extends Component {
+class ViewLayoutWrapper extends Component {
     render() {
         if (this.props.job_id) {
             return (
@@ -25,31 +26,31 @@ class ViewLayout extends Component {
         this.componentCharts.push(componentChart);
     }
 
-    generateViewColumns(sinkCols) {
+    generateViewColumns(viewCols) {
         let self = this;
-        let { jobEvents, sinks } = this.props;
+        let { jobEvents, views } = this.props;
 
-        return sinkCols.map(sinkCol => {
-            let sink = sinks.get(sinkCol);
+        return viewCols.map(view_id => {
+            let view = views[view_id];
             return (
-                <Sink
-                    sink={sink}
-                    sinks={sinks}
-                    width={100 / sinkCols.length}
+                <View
+                    view={view}
+                    views={views}
+                    width={100 / viewCols.length}
                     jobEvents={jobEvents}
                     addComponentChart={self.addComponentChart.bind(self)}
                     componentCharts={self.componentCharts}
-                    key={sink.sink_id}/>
+                    key={view.sink_id}/>
             );
         });
     }
 
     render() {
-        let { sinkLayout } = this.props;
-        let rows = sinkLayout.map((sinkRow, index) => {
+        let { viewLayout } = this.props;
+        let rows = viewLayout.map((viewRow, index) => {
             return (
                 <div className="flex-row" key={index}>
-                    {this.generateViewColumns(sinkRow)}
+                    {this.generateViewColumns(viewRow)}
                 </div>
             );
         });
@@ -66,9 +67,9 @@ class ViewLayout extends Component {
 export default connect(
     state => {
         return {
-            sinks: state.sinks,
-            sinkLayout: sinkLayoutGen(state.sinks),
+            views: state.views,
+            viewLayout: viewLayoutGen(_.values(state.views)),
             job_id: state.job_id
         };
     }
-)(View);
+)(ViewLayoutWrapper);

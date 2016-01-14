@@ -8,9 +8,9 @@ export function jobCreated(job_id) {
     };
 }
 
-export function jobStart(sinks) {
+export function jobStart(views) {
     return {
         type: JOB_START,
-        sinks
+        views
     };
 }

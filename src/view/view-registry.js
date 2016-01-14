@@ -1,6 +1,6 @@
 import JuttleViz from "juttle-viz";
 
-const SINK_REGISTRY = {
+const VIEW_REGISTRY = {
     barchart: JuttleViz.Barchart,
     text: JuttleViz.Text,
     timechart: JuttleViz.Timechart,
@@ -14,4 +14,4 @@ const SINK_REGISTRY = {
     timechartvizjs: JuttleViz.TimechartVizJs
 };
 
-export default SINK_REGISTRY;
+export default VIEW_REGISTRY;

@@ -1,9 +1,9 @@
 import _ from "underscore";
 import React, { Component } from "react";
-import SinkRegistry from "./sink-registry";
+import ViewRegistry from "./view-registry";
 
-class Sink extends Component {
-    handleSinkMsg(msg) {
+class View extends Component {
+    handleViewMsg(msg) {
         switch (msg.type) {
 
             case "points":
@@ -23,18 +23,18 @@ class Sink extends Component {
     }
 
     componentWillMount() {
-        var sinkConstructorOptions = {
-            params: _.omit(this.props.sink.options, "_jut_time_bounds"),
-            _jut_time_bounds: this.props.sink.options._jut_time_bounds,
-            type: this.props.sink.type,
+        var viewConstructorOptions = {
+            params: _.omit(this.props.view.options, "_jut_time_bounds"),
+            _jut_time_bounds: this.props.view.options._jut_time_bounds,
+            type: this.props.view.type,
             juttleEnv: {
                 now: new Date()
             }
         };
-        let ViewConstructor = SinkRegistry[this.props.sink.type];
+        let ViewConstructor = ViewRegistry[this.props.view.type];
 
         if (ViewConstructor) {
-            this.componentChart = new ViewConstructor(sinkConstructorOptions, this.props.componentCharts);
+            this.componentChart = new ViewConstructor(viewConstructorOptions, this.props.componentCharts);
         }
         else {
             this.componentChart = null;
@@ -44,7 +44,7 @@ class Sink extends Component {
             this.props.addComponentChart(this.componentChart);
         }
 
-        this.props.jobEvents.on(this.props.sink.sink_id, this.handleSinkMsg, this);
+        this.props.jobEvents.on(this.props.view.sink_id, this.handleViewMsg, this);
     }
 
     componentDidMount() {
@@ -60,7 +60,6 @@ class Sink extends Component {
 
     componentWillUnmount() {
         window.removeEventListener("resize", this._setChartDimensions);
-        this.props.jobEvents.removeListener(this.props.sink.sink_id, this.handleSinkMsg, this);
     }
 
     _setChartDimensions() {
@@ -76,4 +75,4 @@ class Sink extends Component {
     }
 }
 
-export default Sink;
+export default View;
