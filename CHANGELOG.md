@@ -1,7 +1,7 @@
 # Change Log
 This file documents all notable changes to juttle-client-library. The release numbering uses [semantic versioning](http://semver.org).
 
-## Current unreleased changes
+## 0.1.4 
 
 ### Major Changes
 
