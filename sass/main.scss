@@ -33,6 +33,11 @@
         border: 1px solid $input-border;
         border-radius: 4px;
     }
+
+    &.error-view {
+        font-size: 20px;
+        color: red;
+    }
 }
 
 .inputs-view {

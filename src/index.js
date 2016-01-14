@@ -1,6 +1,7 @@
 import Input from "./inputs";
 import View from "./view";
 import OutriggerAPI from "./utils/api";
+import Errors from "./errors";
 
 export default function Juttle(outriggerUrl) {
     this.outriggerUrl = outriggerUrl;
@@ -18,4 +19,5 @@ export default function Juttle(outriggerUrl) {
 
     this.Input = Input.bind(null, this.outriggerUrl);
     this.View = View.bind(null, this.outriggerUrl);
+    this.Errors = Errors;
 }

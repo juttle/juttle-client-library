@@ -49,6 +49,11 @@ export default class View {
             return self.api.runJob(bundle, inputValues);
         })
         .then(job => {
+            if (!job.job_id) {
+                let e = new Error(job.code || job.message || "runJob error");
+                e.info = job.info;
+                throw e;
+            }
             dispatch(jobCreated(job.job_id));
 
             self._jobSocket = new JobSocket(`ws://${self.outriggerUrl}/api/v0/jobs/${job.job_id}`);
@@ -56,6 +61,8 @@ export default class View {
             self._jobSocket.on("close", self._onClose, self);
 
             self._starting = false;
+
+            return self.jobEvents;
         });
     }
 
@@ -64,6 +71,8 @@ export default class View {
 
         if (msg.type === "job_start") {
             dispatch(jobStart(msg.sinks));
+        } else if (msg.type === "warning" || msg.type === "error") {
+            this.jobEvents.emit(msg.type, msg[msg.type]);
         } else {
             this.jobEvents.emit(msg.sink_id, msg);
         }
@@ -79,7 +88,7 @@ export default class View {
         if (this._jobSocket) {
             return this._jobSocket.close();
         }
-        
+
         return Promise.resolve();
     }
 }
