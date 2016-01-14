@@ -2,17 +2,18 @@ import { combineReducers } from "redux";
 
 import { JOB_START, JOB_CREATED } from "./actions";
 
-function sinks(state = new Map(), action) {
+function views(state = {}, action) {
     switch (action.type) {
 
         case JOB_START:
-            let sinks = new Map();
-    
-            action.sinks.forEach(sink => {
-                sinks.set(sink.sink_id, sink);
+            let views = {};
+
+            // XXX need to change outrigger to return view_id instead of sink_id
+            action.views.forEach(view => {
+                views[view.sink_id] = view;
             });
-    
-            return sinks;
+
+            return views;
         default:
             return state;
 
@@ -26,11 +27,11 @@ function job_id(state = null, action) {
             return action.job_id;
         default:
             return state;
-    
+
     }
 }
 
 export default combineReducers({
-    sinks,
+    views,
     job_id
 });
