@@ -101,7 +101,7 @@ describe("job-socket", function() {
                     options: {
                         _jut_time_bounds: [
                             {
-                                from: time1,
+                                from: time1
                             }
                         ]
                     }

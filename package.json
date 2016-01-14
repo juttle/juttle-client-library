@@ -16,7 +16,7 @@
     "build:lib": "babel src --out-dir lib",
     "build": "npm run build:lib && npm run build:umd && npm run build:css",
     "test": "mocha --compilers js:babel-register --recursive",
-    "lint": "eslint src example",
+    "lint": "eslint src example test",
     "prepublish": "npm run clean && npm run build"
   },
   "repository": {
