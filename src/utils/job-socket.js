@@ -1,4 +1,5 @@
 import EventEmitter from "eventemitter3";
+import JSDP from "juttle-jsdp";
 
 export default class JobSocket {
     constructor(url) {
@@ -39,7 +40,7 @@ export default class JobSocket {
     }
 
     _onMessage(event) {
-        let msg = JSON.parse(event.data);
+        let msg = JSDP.deserialize(event.data);
 
         // manage pings so the rest of the app doesn't have to
         if (msg.type === "ping") {
@@ -48,32 +49,6 @@ export default class JobSocket {
             });
 
             return;
-        }
-
-        if (msg.hasOwnProperty("time")) {
-            msg.time = new Date(msg.time);
-        }
-
-        if (msg.hasOwnProperty("points")) {
-            msg.points.forEach(point => {
-                if (point.hasOwnProperty("time")) {
-                    point.time = new Date(point.time);
-                }
-            });
-        }
-
-        if (msg.hasOwnProperty("sinks")) {
-            msg.sinks.forEach((sink) => {
-                sink.options._jut_time_bounds.forEach((timeBound) => {
-                    if (timeBound.from) {
-                        timeBound.from = new Date(timeBound.from);
-                    }
-
-                    if (timeBound.to) {
-                        timeBound.to = new Date(timeBound.to);
-                    }
-                });
-            });
         }
 
         this._emitter.emit("message", msg);

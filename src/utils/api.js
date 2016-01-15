@@ -1,4 +1,5 @@
 import fetch from "isomorphic-fetch";
+import JSDP from "juttle-jsdp";
 
 const API_PREFIX = "/api/v0";
 
@@ -11,7 +12,7 @@ export default class OutriggerHttp {
         this.url = `${outriggerUrl}${API_PREFIX}/`;
     }
 
-    getInputs(bundle, inputs) {
+    getInputs(bundle, inputs = {}) {
         return fetch(`${this.url}prepare`, {
             method: "post",
             headers: {
@@ -19,13 +20,14 @@ export default class OutriggerHttp {
             },
             body: JSON.stringify({
                 bundle,
-                inputs
+                inputs: JSDP.serialize(inputs, { toObject: true })
             })
         })
-        .then(res => res.json());
+        .then(res => res.json())
+        .then(parsedBody => JSDP.deserialize(parsedBody));
     }
 
-    runJob(bundle, inputs) {
+    runJob(bundle, inputs = {}) {
         return fetch(`${this.url}jobs`, {
             method: "post",
             headers: {
@@ -34,7 +36,7 @@ export default class OutriggerHttp {
             },
             body: JSON.stringify({
                 bundle,
-                inputs
+                inputs: JSDP.serialize(inputs, { toObject: true })
             })
         })
         .then(res => res.json());

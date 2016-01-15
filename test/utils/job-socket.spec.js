@@ -1,6 +1,7 @@
 import { WebSocket, Server } from "mock-socket";
 import { expect } from "chai";
 import JobSocket from "../../src/utils/job-socket";
+import JSDP from "juttle-jsdp";
 
 describe("job-socket", function() {
 
@@ -39,7 +40,7 @@ describe("job-socket", function() {
                 done();
             });
 
-            mockServer.send(JSON.stringify({
+            mockServer.send(JSDP.serialize({
                 time: sampleDate,
                 type: "mark",
                 sink: "sink0"
@@ -66,7 +67,7 @@ describe("job-socket", function() {
                 done();
             });
 
-            mockServer.send(JSON.stringify({
+            mockServer.send(JSDP.serialize({
                 sink_id: "sink0",
                 points: points
             }));
@@ -113,7 +114,7 @@ describe("job-socket", function() {
                 done();
             });
 
-            mockServer.send(JSON.stringify({
+            mockServer.send(JSDP.serialize({
                 sinks: sinks
             }));
         });
