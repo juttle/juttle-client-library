@@ -59,7 +59,12 @@ class View extends Component {
     }
 
     componentWillUnmount() {
+        // remove event listeners
+        this.props.jobEvents.off(this.props.view.sink_id, this.handleViewMsg, this);
         window.removeEventListener("resize", this._setChartDimensions);
+
+        // destry chart
+        this.componentChart.destroy();
     }
 
     _setChartDimensions() {
