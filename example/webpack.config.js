@@ -25,6 +25,10 @@ module.exports = {
                 include: path.join(__dirname, '..')
             },
             {
+                test: /\.juttle$/,
+                loaders: ['raw']
+            },
+            {
                 test: /\.json$/,
                 include: path.join(__dirname, '..'),
                 loader: 'json'
