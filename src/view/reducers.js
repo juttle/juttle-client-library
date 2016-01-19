@@ -4,6 +4,9 @@ import { JOB_START, JOB_CREATED } from "./actions";
 
 function views(state = {}, action) {
     switch (action.type) {
+        // reset views on new job
+        case JOB_CREATED:
+            return {};
 
         case JOB_START:
             let views = {};
@@ -14,6 +17,7 @@ function views(state = {}, action) {
             });
 
             return views;
+
         default:
             return state;
 
