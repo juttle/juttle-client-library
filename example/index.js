@@ -2,26 +2,7 @@ import "../sass/main.scss";
 
 import Juttle from "../src";
 
-let program = `
-    input name: text;
-
-    emit -limit 1000
-    | put val = Math.random()
-    | put name = name
-    | (
-        view timechart -o {
-            id: 'tim',
-            valueField: 'val',
-            row: 0
-        };
-        filter val > 0.5
-        | view events -o {
-            title: 'above .50',
-            on: 'tim'
-        };
-        keep val
-        | view table -row 0;
-    )`;
+import program from "./example.juttle";
 
 let client = new Juttle("localhost:8080");
 let bundle = {
