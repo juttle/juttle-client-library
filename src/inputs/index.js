@@ -36,6 +36,12 @@ export default class Input {
         this.store.dispatch(ActionCreators.updateBundle(bundle));
         return this.api.getInputs(bundle)
         .then(inputs => {
+            if (!Array.isArray(inputs)) {
+                let default_message = "non-array reply from getInputs: " + JSON.stringify(inputs);
+                let e = new Error(inputs.code || inputs.message || default_message);
+                e.info = inputs.info;
+                throw e;
+            }
             this.store.dispatch(ActionCreators.updateInputDefs(inputs));
         });
     }

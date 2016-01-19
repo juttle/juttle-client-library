@@ -31,7 +31,13 @@ let bundle = {
 
 let view = new client.View(document.getElementById("views"));
 let inputs = new client.Input(document.getElementById("inputs"));
-inputs.render(bundle);
+let error = new client.Errors(document.getElementById("error"));
+
+inputs.render(bundle)
+.catch(err => {
+    error.render(err);
+});
+
 
 document.getElementById("btn-run").addEventListener("click", () => {
     view.run(bundle, inputs.getValues());
