@@ -1,7 +1,7 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 
 class TextInput extends Component {
-    getType() { return "text"; }
+    getType() { return 'text'; }
 
     handleChange(event) {
         this.props.inputUpdate(event.target.value);
@@ -9,7 +9,7 @@ class TextInput extends Component {
 
     render() {
         let { value } = this.props.input;
-        let currentValue = value ? value : "";
+        let currentValue = value ? value : '';
 
         return (
             <div className="form-group">

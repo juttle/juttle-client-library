@@ -1,4 +1,4 @@
-import EventEmitter from "eventemitter3";
+import EventEmitter from 'eventemitter3';
 
 export default class JobSocket {
     constructor(url) {
@@ -8,8 +8,8 @@ export default class JobSocket {
         // setup websocket
         this._socket = new WebSocket(url);
 
-        this._socket.onopen = (event) => { this._emitter.emit("open"); };
-        this._socket.onclose = (event) => { this._emitter.emit("close"); };
+        this._socket.onopen = (event) => { this._emitter.emit('open'); };
+        this._socket.onclose = (event) => { this._emitter.emit('close'); };
         this._socket.onmessage = this._onMessage.bind(this);
         this._socket.onerror = this._onError.bind(this);
     }
@@ -35,34 +35,34 @@ export default class JobSocket {
     }
 
     _onError(event) {
-        this._emitter.emit("error", JSON.parse(event.data));
+        this._emitter.emit('error', JSON.parse(event.data));
     }
 
     _onMessage(event) {
         let msg = JSON.parse(event.data);
 
         // manage pings so the rest of the app doesn't have to
-        if (msg.type === "ping") {
+        if (msg.type === 'ping') {
             this.send({
-                type: "pong"
+                type: 'pong'
             });
 
             return;
         }
 
-        if (msg.hasOwnProperty("time")) {
+        if (msg.hasOwnProperty('time')) {
             msg.time = new Date(msg.time);
         }
 
-        if (msg.hasOwnProperty("points")) {
+        if (msg.hasOwnProperty('points')) {
             msg.points.forEach(point => {
-                if (point.hasOwnProperty("time")) {
+                if (point.hasOwnProperty('time')) {
                     point.time = new Date(point.time);
                 }
             });
         }
 
-        if (msg.hasOwnProperty("sinks")) {
+        if (msg.hasOwnProperty('sinks')) {
             msg.sinks.forEach((sink) => {
                 sink.options._jut_time_bounds.forEach((timeBound) => {
                     if (timeBound.from) {
@@ -76,7 +76,7 @@ export default class JobSocket {
             });
         }
 
-        this._emitter.emit("message", msg);
+        this._emitter.emit('message', msg);
     }
 
     close() {

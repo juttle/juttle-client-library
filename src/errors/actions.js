@@ -1,4 +1,4 @@
-export const ERROR = "ERROR";
+export const ERROR = 'ERROR';
 
 export function errorInfo(err) {
     function get_nested_error(err) {
@@ -8,13 +8,13 @@ export function errorInfo(err) {
 
     function location_str(location) {
         let start = location.start;
-        return "At line " + start.line + ", column " + start.column;
+        return 'At line ' + start.line + ', column ' + start.column;
     }
 
     let error = get_nested_error(err);
     let location = error.info && error.info.location;
-    let message = location ? location_str(location) + ": " + error.message : error.message;
-    let title = error.code || "unexpected error";
+    let message = location ? location_str(location) + ': ' + error.message : error.message;
+    let title = error.code || 'unexpected error';
 
     return {
         type: ERROR,

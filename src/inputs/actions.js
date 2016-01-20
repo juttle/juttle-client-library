@@ -1,11 +1,11 @@
-import OutriggerAPI from "../utils/api";
-import _ from "underscore";
+import OutriggerAPI from '../utils/api';
+import _ from 'underscore';
 
-export const INPUT_DEFS_UPDATE = "INPUT_DEFS_UPDATE";
-export const INPUT_VALUE_UPDATE = "INPUT_VALUE_UPDATE";
+export const INPUT_DEFS_UPDATE = 'INPUT_DEFS_UPDATE';
+export const INPUT_VALUE_UPDATE = 'INPUT_VALUE_UPDATE';
 
-export const UPDATE_BUNDLE = "UPDATE_BUNDLE";
-export const UPDATE_OUTRIGGER_URL = "UPDATE_OUTRIGGER_URL";
+export const UPDATE_BUNDLE = 'UPDATE_BUNDLE';
+export const UPDATE_OUTRIGGER_URL = 'UPDATE_OUTRIGGER_URL';
 
 export function updateBundle(bundle) {
     return {

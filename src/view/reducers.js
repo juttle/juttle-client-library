@@ -1,6 +1,6 @@
-import { combineReducers } from "redux";
+import { combineReducers } from 'redux';
 
-import { JOB_START, JOB_CREATED } from "./actions";
+import { JOB_START, JOB_CREATED } from './actions';
 
 function views(state = {}, action) {
     switch (action.type) {

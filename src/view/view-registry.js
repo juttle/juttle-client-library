@@ -1,4 +1,4 @@
-import JuttleViz from "juttle-viz";
+import JuttleViz from 'juttle-viz';
 
 const VIEW_REGISTRY = {
     barchart: JuttleViz.Barchart,
