@@ -1,5 +1,5 @@
-import React from "react";
-import { connect } from "react-redux";
+import React from 'react';
+import { connect } from 'react-redux';
 
 var ErrorView = ({error}) => (
     <div className="juttle-client-library error-view">

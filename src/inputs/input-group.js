@@ -1,6 +1,6 @@
-import React, { Component, PropTypes } from "react";
-import { connect } from "react-redux";
-import InputContainer from "./components/input-container";
+import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
+import InputContainer from './components/input-container';
 
 const ENTER_KEY = 13;
 

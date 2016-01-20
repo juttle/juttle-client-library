@@ -1,9 +1,9 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import _ from "underscore";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import _ from 'underscore';
 
-import View from "./view";
-import viewLayoutGen from "./view-layout-gen";
+import View from './view';
+import viewLayoutGen from './view-layout-gen';
 
 class ViewLayoutWrapper extends Component {
     render() {

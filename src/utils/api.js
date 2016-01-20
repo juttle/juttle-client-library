@@ -1,11 +1,11 @@
-import fetch from "isomorphic-fetch";
+import fetch from 'isomorphic-fetch';
 
-const API_PREFIX = "/api/v0";
+const API_PREFIX = '/api/v0';
 
 export default class OutriggerHttp {
     constructor(outriggerUrl) {
-        if (!outriggerUrl.startsWith("http")) {
-            throw new Error("Url scheme must be \'http\' or \'https\'");
+        if (!outriggerUrl.startsWith('http')) {
+            throw new Error('Url scheme must be \'http\' or \'https\'');
         }
 
         this.url = `${outriggerUrl}${API_PREFIX}/`;
@@ -13,9 +13,9 @@ export default class OutriggerHttp {
 
     getInputs(bundle, inputs) {
         return fetch(`${this.url}prepare`, {
-            method: "post",
+            method: 'post',
             headers: {
-                "Content-Type": "application/json"
+                'Content-Type': 'application/json'
             },
             body: JSON.stringify({
                 bundle,
@@ -27,10 +27,10 @@ export default class OutriggerHttp {
 
     runJob(bundle, inputs) {
         return fetch(`${this.url}jobs`, {
-            method: "post",
+            method: 'post',
             headers: {
-                "Accept": "application/json",
-                "Content-Type": "application/json"
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
             },
             body: JSON.stringify({
                 bundle,

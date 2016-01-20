@@ -1,18 +1,18 @@
-import "../sass/main.scss";
+import '../sass/main.scss';
 
-import Juttle from "../src";
+import Juttle from '../src';
 
-import program from "./example.juttle";
+import program from './example.juttle';
 
-let client = new Juttle("localhost:8080");
+let client = new Juttle('localhost:8080');
 let bundle = {
     program
 };
 
 
-let view = new client.View(document.getElementById("views"));
-let inputs = new client.Input(document.getElementById("inputs"));
-let error = new client.Errors(document.getElementById("error"));
+let view = new client.View(document.getElementById('views'));
+let inputs = new client.Input(document.getElementById('inputs'));
+let error = new client.Errors(document.getElementById('error'));
 
 inputs.render(bundle)
 .catch(err => {
@@ -20,10 +20,10 @@ inputs.render(bundle)
 });
 
 
-document.getElementById("btn-run").addEventListener("click", () => {
+document.getElementById('btn-run').addEventListener('click', () => {
     view.run(bundle, inputs.getValues());
 });
 
-document.getElementById("btn-stop").addEventListener("click", () => {
+document.getElementById('btn-stop').addEventListener('click', () => {
     view.stop();
 });

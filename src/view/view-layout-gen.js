@@ -1,4 +1,4 @@
-import _ from "underscore";
+import _ from 'underscore';
 
 // handle undefined cols or rows
 let compare = (a, b) => {
@@ -21,11 +21,11 @@ export default (viewArr) => {
     // group by row number, concat unspecified at end of array
     let groupViews = _.groupBy(viewArr, view => {
         let row = getRow(view);
-        return _.isNumber(row) ? row : "noRowSpecified";
+        return _.isNumber(row) ? row : 'noRowSpecified';
     });
 
-    let noRow = groupViews["noRowSpecified"] || [];
-    delete groupViews["noRowSpecified"];
+    let noRow = groupViews['noRowSpecified'] || [];
+    delete groupViews['noRowSpecified'];
 
     viewArr = _.values(groupViews);
 

@@ -1,8 +1,8 @@
-import { WebSocket, Server } from "mock-socket";
-import { expect } from "chai";
-import JobSocket from "../../src/utils/job-socket";
+import { WebSocket, Server } from 'mock-socket';
+import { expect } from 'chai';
+import JobSocket from '../../src/utils/job-socket';
 
-describe("job-socket", function() {
+describe('job-socket', function() {
 
     let _origWebSocket = global.WebSocket;
     let mockServer;
@@ -17,11 +17,11 @@ describe("job-socket", function() {
     });
 
     beforeEach((done) => {
-        mockServer = new Server("ws://localhost:8080");
-        mockServer.on("connection", server => {
+        mockServer = new Server('ws://localhost:8080');
+        mockServer.on('connection', server => {
             done();
         });
-        jobSocket = new JobSocket("ws://localhost:8080");
+        jobSocket = new JobSocket('ws://localhost:8080');
     });
 
     afterEach(() => {
@@ -29,24 +29,24 @@ describe("job-socket", function() {
         jobSocket.close();
     });
 
-    describe("converts time strings to dates", () => {
-        it("time field", (done) => {
+    describe('converts time strings to dates', () => {
+        it('time field', (done) => {
             let sampleDate = new Date(2000);
 
-            jobSocket.on("message", (payload) => {
-                expect(payload.time).to.be.a("date");
+            jobSocket.on('message', (payload) => {
+                expect(payload.time).to.be.a('date');
                 expect(payload.time.getTime()).to.equal(sampleDate.getTime());
                 done();
             });
 
             mockServer.send(JSON.stringify({
                 time: sampleDate,
-                type: "mark",
-                sink: "sink0"
+                type: 'mark',
+                sink: 'sink0'
             }));
         });
 
-        it("time field in points", (done) => {
+        it('time field in points', (done) => {
             let time1 = new Date(1000);
             let time2 = new Date(2000);
 
@@ -61,25 +61,25 @@ describe("job-socket", function() {
                 }
             ];
 
-            jobSocket.on("message", (payload) => {
+            jobSocket.on('message', (payload) => {
                 expect(payload.points).to.deep.equal(points);
                 done();
             });
 
             mockServer.send(JSON.stringify({
-                sink_id: "sink0",
+                sink_id: 'sink0',
                 points: points
             }));
         });
 
-        it("from and to in _jut_time_bounds in sinks", (done) => {
+        it('from and to in _jut_time_bounds in sinks', (done) => {
             let time1 = new Date(1000);
             let time2 = new Date(2000);
 
             const sinks = [
                 {
-                    type: "logger",
-                    sink_id: "sink0",
+                    type: 'logger',
+                    sink_id: 'sink0',
                     options: {
                         _jut_time_bounds: [
                             {
@@ -96,8 +96,8 @@ describe("job-socket", function() {
                     }
                 },
                 {
-                    type: "table",
-                    sink_id: "sink1",
+                    type: 'table',
+                    sink_id: 'sink1',
                     options: {
                         _jut_time_bounds: [
                             {
@@ -108,7 +108,7 @@ describe("job-socket", function() {
                 }
             ];
 
-            jobSocket.on("message", (payload) => {
+            jobSocket.on('message', (payload) => {
                 expect(payload.sinks).to.deep.equal(sinks);
                 done();
             });

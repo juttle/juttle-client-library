@@ -1,7 +1,7 @@
-import TextInput from "./text-input";
+import TextInput from './text-input';
 
 class NumberInput extends TextInput {
-    getType() { return "number"; }
+    getType() { return 'number'; }
 
     handleChange(event) {
         let value = parseInt(event.target.value, 10);
