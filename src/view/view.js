@@ -1,21 +1,21 @@
-import _ from "underscore";
-import React, { Component } from "react";
-import ViewRegistry from "./view-registry";
+import _ from 'underscore';
+import React, { Component } from 'react';
+import ViewRegistry from './view-registry';
 
 class View extends Component {
     handleViewMsg(msg) {
         switch (msg.type) {
 
-            case "points":
+            case 'points':
                 this.componentChart.consume(msg.points);
                 break;
-            case "mark":
+            case 'mark':
                 this.componentChart.consume_mark(msg.time);
                 break;
-            case "tick":
+            case 'tick':
                 this.componentChart.consume_tick(msg.time);
                 break;
-            case "sink_end":
+            case 'sink_end':
                 this.componentChart.consume_eof();
                 break;
 
@@ -24,7 +24,7 @@ class View extends Component {
 
     componentWillMount() {
         var viewConstructorOptions = {
-            params: _.omit(this.props.view.options, "_jut_time_bounds"),
+            params: _.omit(this.props.view.options, '_jut_time_bounds'),
             _jut_time_bounds: this.props.view.options._jut_time_bounds,
             type: this.props.view.type,
             juttleEnv: {
@@ -48,7 +48,7 @@ class View extends Component {
     }
 
     componentDidMount() {
-        window.addEventListener("resize", this._setChartDimensions.bind(this));
+        window.addEventListener('resize', this._setChartDimensions.bind(this));
 
         setTimeout(() => {
             if (this.componentChart.visuals) {
@@ -59,7 +59,12 @@ class View extends Component {
     }
 
     componentWillUnmount() {
-        window.removeEventListener("resize", this._setChartDimensions);
+        // remove event listeners
+        this.props.jobEvents.off(this.props.view.sink_id, this.handleViewMsg, this);
+        window.removeEventListener('resize', this._setChartDimensions);
+
+        // destry chart
+        this.componentChart.destroy();
     }
 
     _setChartDimensions() {
@@ -67,7 +72,7 @@ class View extends Component {
     }
 
     render() {
-        let style = { width: this.props.width + "%" };
+        let style = { width: this.props.width + '%' };
 
         return (
             <div className="flex-col" style={style} ref="chartParent"></div>

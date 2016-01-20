@@ -1,7 +1,7 @@
-import React, { Component, PropTypes } from "react";
-import InputTypes from "./input-types";
-import * as ActionCreators from "../actions";
-import { connect } from "react-redux";
+import React, { Component, PropTypes } from 'react';
+import InputTypes from './input-types';
+import * as ActionCreators from '../actions';
+import { connect } from 'react-redux';
 
 class InputContainer extends Component {
     inputUpdate(newValue) {

@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import Select from "react-select";
+import React, { Component } from 'react';
+import Select from 'react-select';
 class SelectInput extends Component {
     handleChange(chosenOption) {
         this.props.inputUpdate(chosenOption.value);

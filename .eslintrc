@@ -13,7 +13,7 @@
         "indent": [ 2, 4, { "SwitchCase": 1 } ],
         "linebreak-style": [ 2, "unix" ],
         "no-unused-vars": [2, { "args": "none" }],
-        "quotes": [ 2, "double" ],
+        "quotes": [ 2, "single" ],
         "react/jsx-uses-react": 1,
         "semi": [ 2, "always" ]
     },
