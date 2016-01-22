@@ -1,6 +1,13 @@
 # Change Log
 This file documents all notable changes to juttle-client-library. The release numbering uses [semantic versioning](http://semver.org).
 
+## 0.2.1
+
+Released 2016-01-22
+
+### Bug Fixes
+- Bump juttle-viz version to 0.3.1 [[#32](https://github.com/juttle/juttle-client-library/pull/32)]
+
 ## 0.2.0
 
 Released 2016-01-21
