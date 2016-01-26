@@ -71,7 +71,7 @@ class DurationInput extends Component {
     handleNumValueChange(event) {
         let value = parseInt(event.target.value, 10);
 
-        if (value !== value) {
+        if (Number.isNaN(value)) {
             return false;
         }
 
