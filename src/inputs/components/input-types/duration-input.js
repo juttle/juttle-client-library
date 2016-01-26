@@ -103,8 +103,9 @@ class DurationInput extends Component {
         let { numValue, unit } = this.state.value;
 
         return (
-            <div className='form-group'>
+            <div className='form-group duration-input'>
                 <input
+                    className='form-control'
                     type={'number'}
                     value={numValue}
                     onChange={this.handleNumValueChange.bind(this)}
