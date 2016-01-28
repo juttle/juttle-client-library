@@ -10,6 +10,7 @@
         "es6": true
     },
     "rules": {
+        "import/imports-first": 2,
         "indent": [ 2, 4, { "SwitchCase": 1 } ],
         "linebreak-style": [ 2, "unix" ],
         "no-unused-vars": [2, { "args": "none" }],
@@ -19,6 +20,7 @@
     },
     "parser": "babel-eslint",
     "plugins": [
+        "import",
         "react"
     ]
 }
