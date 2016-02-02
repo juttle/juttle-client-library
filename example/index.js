@@ -29,9 +29,13 @@ document.getElementById('btn-stop').addEventListener('click', () => {
 });
 
 document.getElementById('btn-clear-errors').addEventListener('click', () => {
-    error.clear();    
+    error.clear();
 });
 
 document.getElementById('btn-clear-view').addEventListener('click', () => {
     view.clear();
+});
+
+document.getElementById('btn-clear-inputs').addEventListener('click', () => {
+    inputs.clear();
 });

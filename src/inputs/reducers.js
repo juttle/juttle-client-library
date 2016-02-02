@@ -6,6 +6,8 @@ function inputs(state = [], action) {
     switch (action.type) {
         case Actions.INPUT_DEFS_UPDATE:
             return action.payload;
+        case Actions.CLEAR_INPUTS:
+            return [];
         default:
             return state;
     }
@@ -13,9 +15,10 @@ function inputs(state = [], action) {
 
 function bundle(state = {}, action) {
     switch(action.type) {
-        case Actions.UPDATE_BUNDLE: {
+        case Actions.UPDATE_BUNDLE:
             return action.payload;
-        }
+        case Actions.CLEAR_INPUTS:
+            return {};
     }
 
     return state;
@@ -23,9 +26,8 @@ function bundle(state = {}, action) {
 
 function outriggerUrl(state = '', action) {
     switch(action.type) {
-        case Actions.UPDATE_OUTRIGGER_URL: {
+        case Actions.UPDATE_OUTRIGGER_URL:
             return action.payload;
-        }
     }
 
     return state;
