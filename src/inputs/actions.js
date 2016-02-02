@@ -1,6 +1,7 @@
 import OutriggerAPI from '../utils/api';
 import _ from 'underscore';
 
+export const CLEAR_INPUTS = 'CLEAR_INPUTS';
 export const INPUT_DEFS_UPDATE = 'INPUT_DEFS_UPDATE';
 export const INPUT_VALUE_UPDATE = 'INPUT_VALUE_UPDATE';
 
@@ -20,6 +21,12 @@ export function updateOutriggerUrl(url) {
         payload: url
     };
 }
+
+export let clearInputs = () => {
+    return {
+        type: CLEAR_INPUTS
+    };
+};
 
 export let updateInputDefs = (inputs) => {
     return {

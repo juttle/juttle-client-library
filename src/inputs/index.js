@@ -46,6 +46,10 @@ export default class Input {
         });
     }
 
+    clear() {
+        this.store.dispatch(ActionCreators.clearInputs());
+    }
+
     getValues() {
         return this.store.getState().inputs.reduce((result, input) => {
             result[input.id] = input.value;
