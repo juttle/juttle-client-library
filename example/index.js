@@ -27,3 +27,7 @@ document.getElementById('btn-run').addEventListener('click', () => {
 document.getElementById('btn-stop').addEventListener('click', () => {
     view.stop();
 });
+
+document.getElementById('btn-clear-errors').addEventListener('click', () => {
+    error.clear();    
+});
