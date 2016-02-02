@@ -60,7 +60,9 @@ export default class JobSocket {
         // use es6 Promise for now, but we might want to use Bluebird instead
         // problem is, there's no good way to override Promise in whatwg-fetch
         return new Promise((resolve, reject) => {
-            self._socket.onclose = resolve;
+            self._emitter.once('close', () => {
+                resolve();
+            });
             self._socket.close();
         });
     }

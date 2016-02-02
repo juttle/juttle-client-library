@@ -9,7 +9,7 @@ import reducers from './reducers';
 import OutriggerAPI from '../utils/api';
 import JobSocket from '../utils/job-socket';
 import EventEmitter from 'eventemitter3';
-import { jobCreated, jobStart } from './actions';
+import { jobCreated, jobStart, clearJob } from './actions';
 
 export default class View {
     constructor(outriggerUrl, el) {
@@ -63,6 +63,15 @@ export default class View {
             self._starting = false;
 
             return self.jobEvents;
+        });
+    }
+
+    clear() {
+        let { dispatch } = this.store;
+
+        return this.stop()
+        .then(() => {
+            dispatch(clearJob());
         });
     }
 

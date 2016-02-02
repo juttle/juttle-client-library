@@ -1,11 +1,12 @@
 import { combineReducers } from 'redux';
 
-import { JOB_START, JOB_CREATED } from './actions';
+import { JOB_START, JOB_CREATED, CLEAR_JOB } from './actions';
 
 function views(state = {}, action) {
     switch (action.type) {
         // reset views on new job
         case JOB_CREATED:
+        case CLEAR_JOB:
             return {};
 
         case JOB_START:
@@ -29,6 +30,8 @@ function job_id(state = null, action) {
 
         case JOB_CREATED:
             return action.job_id;
+        case CLEAR_JOB:
+            return null;
         default:
             return state;
 
