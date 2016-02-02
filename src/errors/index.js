@@ -5,7 +5,7 @@ import { compose, createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 
 import reducers from './reducers';
-import { errorInfo } from './actions';
+import { errorInfo, clearError } from './actions';
 import ErrorView from './error-view';
 
 export default class Errors {
@@ -29,5 +29,9 @@ export default class Errors {
     render(err) {
         let { dispatch } = this.store;
         dispatch(errorInfo(err));
+    }
+
+    clear() {
+        this.store.dispatch(clearError());
     }
 }

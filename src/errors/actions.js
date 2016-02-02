@@ -1,4 +1,5 @@
 export const ERROR = 'ERROR';
+export const CLEAR_ERROR = 'CLEAR_ERROR';
 
 export function errorInfo(err) {
     function get_nested_error(err) {
@@ -22,5 +23,11 @@ export function errorInfo(err) {
             title,
             message
         }
+    };
+}
+
+export function clearError() {
+    return {
+        type: CLEAR_ERROR
     };
 }
