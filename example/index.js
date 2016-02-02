@@ -31,3 +31,7 @@ document.getElementById('btn-stop').addEventListener('click', () => {
 document.getElementById('btn-clear-errors').addEventListener('click', () => {
     error.clear();    
 });
+
+document.getElementById('btn-clear-view').addEventListener('click', () => {
+    view.clear();
+});
