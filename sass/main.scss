@@ -24,7 +24,6 @@
     .form-control {
         width: 100%;
         display: block;
-        height: 34px;
         padding: 6px 12px;
         font-size: 14px;
         line-height: 1.42;
@@ -47,4 +46,17 @@
 
 .inputs-view {
     @import "../node_modules/react-select/dist/react-select";
+
+    .duration-input {
+        display: flex;
+
+        input {
+            width: 50%;
+            margin-right: 8px;
+        }
+
+        .Select {
+            width: 50%;
+        }
+    }
 }
