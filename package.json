@@ -64,7 +64,7 @@
     "immutable": "^3.7.6",
     "isomorphic-fetch": "^2.2.0",
     "juttle-jsdp": "^0.1.1",
-    "juttle-viz": "^0.3.1",
+    "juttle-viz": "^0.4.0",
     "moment": "^2.11.1",
     "react": "^0.14.3",
     "react-datepicker": "^0.18.0",
