@@ -21,7 +21,10 @@ inputs.render(bundle)
 
 
 document.getElementById('btn-run').addEventListener('click', () => {
-    view.run(bundle, inputs.getValues());
+    view.run(bundle, inputs.getValues())
+    .catch(err => {
+        error.render(err);
+    });
 });
 
 document.getElementById('btn-stop').addEventListener('click', () => {
