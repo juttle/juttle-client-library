@@ -5,7 +5,6 @@ import errors from '../utils/errors';
 
 export default (views) => {
     let juttleViews = {};
-    let viewErrors = [];
     views.forEach(view => {
         var juttleViewConstructorOptions = {
             params: _.omit(view.options, '_jut_time_bounds'),
@@ -31,16 +30,20 @@ export default (views) => {
             );
         }
         catch (err) {
-            viewErrors.push(err.info);
+            let flattenedError = ViewConstructor.getFlattenedParamValidationErrors(err.info.errors);
+            let errorMessages = _.chain(flattenedError)
+               .values()
+               .pluck(0)
+               .pluck('message')
+               .value();
+
+            throw new errors.JuttleViewParamsError({
+                juttleView: err.info.sinkName,
+                errorMessages: errorMessages.join(' '),
+                detail: flattenedError
+            });
         }
     });
-
-    if (viewErrors.length > 0) {
-        throw new errors.JuttleViewParamsError({
-            detail: viewErrors,
-            viewNames: _.pluck(viewErrors, 'sinkName').join(', ')
-        });
-    }
 
     return juttleViews;
 };

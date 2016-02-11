@@ -42,25 +42,26 @@ describe('test view component generator', () => {
             }]);
         } catch (err) {
             expect(err.code).to.equal('JUTTLE-VIEW-PARAMS-INVALID');
-            expect(err.message).to.equal('The following views have invalid parameters: timechart');
+            expect(err.message).to.have.string('"timechart" has invalid parameters:');
+            expect(err.message).to.have.string('unknown_option');
             return;
         }
 
         throw new Error('Expected error here');
     });
 
-    it('two invalid components throw error', () => {
+    it('two invalid views throw error on first juttleView', () => {
         try {
             juttleViewGen([
                 {
-                    type: 'timechart',
+                    type: 'barchart',
                     sink_id: 'view0',
                     options: {
                         'unknown_option': true
                     }
                 },
                 {
-                    type: 'barchart',
+                    type: 'timechart',
                     sink_id: 'view1',
                     options: {
                         'unknown_option': true
@@ -69,7 +70,8 @@ describe('test view component generator', () => {
             ]);
         } catch (err) {
             expect(err.code).to.equal('JUTTLE-VIEW-PARAMS-INVALID');
-            expect(err.message).to.equal('The following views have invalid parameters: timechart, barchart');
+            expect(err.message).to.have.string('"barchart" has invalid parameters:');
+            expect(err.message).to.have.string('unknown_option');
             return;
         }
 
