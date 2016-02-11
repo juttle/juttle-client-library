@@ -1,6 +1,11 @@
 # Change Log
 This file documents all notable changes to juttle-client-library. The release numbering uses [semantic versioning](http://semver.org).
 
+## Unreleased Changes
+
+### Major Changes
+- Add error reporting for invalid JuttleView parameters.
+
 ## 0.2.1
 
 Released 2016-01-22
