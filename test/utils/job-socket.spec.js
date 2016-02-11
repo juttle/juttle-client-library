@@ -11,6 +11,11 @@ describe('job-socket', function() {
 
     before(() => {
         global.WebSocket = WebSocket;
+
+        // an unholy hack going on here.
+        // can remove once https://github.com/thoov/mock-socket/issues/71 is resolved
+        global.window.Event = undefined;
+        global.window.MessageEvent = undefined;
     });
 
     after(() => {
