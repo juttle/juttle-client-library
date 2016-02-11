@@ -1,15 +1,13 @@
 import React from 'react';
-import { render } from 'react-dom';
-import { compose, createStore, applyMiddleware } from 'redux';
-import { Provider } from 'react-redux';
-import thunk from 'redux-thunk'; // allows for async actions
+import * as ReactDOM from 'react-dom';
+import EventEmitter from 'eventemitter3';
 
+import errors from '../utils/errors';
 import ViewLayout from './view-layout';
-import reducers from './reducers';
 import OutriggerAPI from '../utils/api';
 import JobSocket from '../utils/job-socket';
-import EventEmitter from 'eventemitter3';
-import { jobCreated, jobStart, clearJob } from './actions';
+import viewLayoutGen from './view-layout-gen';
+import juttleViewGen from './juttle-view-gen';
 
 export default class View {
     constructor(outriggerUrl, el) {
@@ -18,16 +16,8 @@ export default class View {
         this.api = new OutriggerAPI(`http://${outriggerUrl}`);
         this.jobEvents = new EventEmitter();
 
-        const store = compose(
-            applyMiddleware(thunk)
-        )(createStore)(reducers);
-
-        this.store = store;
-
-        render(
-            <Provider store={this.store}>
-                <ViewLayout jobEvents={this.jobEvents}/>
-            </Provider>,
+        ReactDOM.render(
+            <ViewLayout jobEvents={this.jobEvents}/>,
             this.el
         );
     }
@@ -39,9 +29,7 @@ export default class View {
         }
 
         this._starting = true;
-
         let self = this;
-        let { dispatch } = this.store;
 
         // incase we're currently running a job, stop the old one
         return this.stop()
@@ -54,33 +42,58 @@ export default class View {
                 e.info = job.info;
                 throw e;
             }
-            dispatch(jobCreated(job.job_id));
-
+            this.job_id = job.job_id;
             self._jobSocket = new JobSocket(`ws://${self.outriggerUrl}/api/v0/jobs/${job.job_id}`);
-            self._jobSocket.on('message', self._onMessage, self);
-            self._jobSocket.on('close', self._onClose, self);
 
-            self._starting = false;
+            return new Promise((resolve, reject) => {
+                self._jobSocket.once('message', (msg) => {
+                    try {
+                        if (msg.type !== 'job_start') {
+                            throw new errors.JobStartError();
+                        }
 
-            return self.jobEvents;
+                        self._instantiateViews(msg.sinks);
+
+                        self._jobSocket.on('message', self._onMessage, self);
+                        self._jobSocket.on('close', self._onClose, self);
+                        self._starting = false;
+                        resolve(self.jobEvents);
+                    } catch (err) {
+                        // if there was an error in this step, abort job
+                        this.stop();
+                        reject(err);
+                    }
+                }, this);
+            });
         });
     }
 
     clear() {
-        let { dispatch } = this.store;
-
         return this.stop()
         .then(() => {
-            dispatch(clearJob());
+            ReactDOM.render(
+                <ViewLayout />,
+                this.el
+            );
         });
     }
 
-    _onMessage(msg) {
-        let { dispatch } = this.store;
+    _instantiateViews(views) {
+        let juttleViews = juttleViewGen(views);
+        let viewLayout = viewLayoutGen(views);
 
-        if (msg.type === 'job_start') {
-            dispatch(jobStart(msg.sinks));
-        } else if (msg.type === 'warning' || msg.type === 'error') {
+        ReactDOM.render(
+            <ViewLayout
+                key={this.job_id}
+                jobEvents={this.jobEvents}
+                viewLayout={viewLayout}
+                juttleViews={juttleViews} />,
+            this.el
+        );
+    }
+
+    _onMessage(msg) {
+        if (msg.type === 'warning' || msg.type === 'error') {
             this.jobEvents.emit(msg.type, msg[msg.type]);
         } else {
             this.jobEvents.emit(msg.sink_id, msg);
