@@ -24,7 +24,7 @@ document.getElementById('btn-run').addEventListener('click', () => {
     inputs.getValues()
     .then((values) => {
         return view.run(bundle, values);
-    })
+    });
 });
 
 document.getElementById('btn-stop').addEventListener('click', () => {
