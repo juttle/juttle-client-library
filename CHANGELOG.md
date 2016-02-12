@@ -1,6 +1,14 @@
 # Change Log
 This file documents all notable changes to juttle-client-library. The release numbering uses [semantic versioning](http://semver.org).
 
+## 0.4.0
+
+Released 2016-02-12
+
+### Major Changes
+- change input.getValues to return a promise and text/number input to update onBlur [[#43](https://github.com/juttle/juttle-client-library/pull/43)]
+
+
 ## Unreleased Changes
 
 ### Major Changes
