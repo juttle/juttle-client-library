@@ -33,8 +33,20 @@ function outriggerUrl(state = '', action) {
     return state;
 }
 
+function updatingValueState(state = 'COMPLETED', action) {
+    switch(action.type) {
+        case Actions.BEGIN_UPDATE_INPUT_VALUE:
+            return 'PENDING';
+        case Actions.END_UPDATE_INPUT_VALUE:
+            return 'COMPLETED';
+    }
+
+    return state;
+}
+
 export default combineReducers({
     inputs,
     bundle,
+    updatingValueState,
     outriggerUrl
 });

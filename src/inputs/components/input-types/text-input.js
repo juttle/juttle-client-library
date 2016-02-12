@@ -1,14 +1,32 @@
 import React, { Component } from 'react';
 
 class TextInput extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            value: props.input.value
+        };
+    }
+
     getType() { return 'text'; }
 
-    handleChange(event) {
+    _onChange(event) {
+        this.setState({ value: event.target.value});
+    }
+
+    _onBlur(event) {
         this.props.inputUpdate(event.target.value);
     }
 
+    componentWillReceiveProps(nextProps) {
+        this.setState({
+            value: nextProps.input.value
+        });
+    }
+
     render() {
-        let { value } = this.props.input;
+        let { value } = this.state;
         let currentValue = value ? value : '';
 
         return (
@@ -16,7 +34,8 @@ class TextInput extends Component {
                 <input
                     type={this.getType()}
                     className="form-control"
-                    onChange={this.handleChange.bind(this)}
+                    onBlur={this._onBlur.bind(this)}
+                    onChange={this._onChange.bind(this)}
                     value={currentValue} />
             </div>
         );

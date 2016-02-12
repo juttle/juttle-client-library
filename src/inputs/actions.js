@@ -8,6 +8,9 @@ export const INPUT_VALUE_UPDATE = 'INPUT_VALUE_UPDATE';
 export const UPDATE_BUNDLE = 'UPDATE_BUNDLE';
 export const UPDATE_OUTRIGGER_URL = 'UPDATE_OUTRIGGER_URL';
 
+export const BEGIN_UPDATE_INPUT_VALUE = 'BEGIN_UPDATE_INPUT_VALUE';
+export const END_UPDATE_INPUT_VALUE = 'END_UPDATE_INPUT_VALUE';
+
 export function updateBundle(bundle) {
     return {
         type: UPDATE_BUNDLE,
@@ -35,8 +38,21 @@ export let updateInputDefs = (inputs) => {
     };
 };
 
+export let beginUpdateInputValue = () => {
+    return {
+        type: 'BEGIN_UPDATE_INPUT_VALUE'
+    };
+};
+
+export let endUpdateInputValue = () => {
+    return {
+        type: 'END_UPDATE_INPUT_VALUE'
+    };
+};
+
 export function updateInputValue(input_id, value) {
     return (dispatch, getState) => {
+        dispatch(beginUpdateInputValue());
         let currentInput = _.findWhere(getState().inputs, { id: input_id });
 
         if (currentInput.value === value) {
@@ -49,6 +65,7 @@ export function updateInputValue(input_id, value) {
         }))
         .then((inputs) => {
             dispatch(updateInputDefs(inputs));
+            dispatch(endUpdateInputValue());
         });
     };
 }

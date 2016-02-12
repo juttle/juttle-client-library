@@ -50,10 +50,27 @@ export default class Input {
         this.store.dispatch(ActionCreators.clearInputs());
     }
 
-    getValues() {
+    _getValuesFromStore() {
         return this.store.getState().inputs.reduce((result, input) => {
             result[input.id] = input.value;
             return result;
         }, {});
+    }
+
+    getValues() {
+        return new Promise((resolve, reject) => {
+            if (this.store.getState().updatingValueState === 'COMPLETED') {
+                resolve(this._getValuesFromStore());
+            }
+            else {
+                let unsubscribe = this.store.subscribe(() => {
+                    if (this.store.getState().updatingValueState === 'COMPLETED') {
+                        unsubscribe();
+                        resolve(this._getValuesFromStore());
+                    }
+                });
+            }
+
+        });
     }
 }
