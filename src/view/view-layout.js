@@ -1,21 +1,6 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import _ from 'underscore';
 
 import View from './view';
-import viewLayoutGen from './view-layout-gen';
-
-class ViewLayoutWrapper extends Component {
-    render() {
-        if (this.props.job_id) {
-            return (
-                <ViewLayout {...this.props} key={this.props.job_id} />
-            );
-        }
-
-        return false;
-    }
-}
 
 class ViewLayout extends Component {
     componentWillMount() {
@@ -27,26 +12,26 @@ class ViewLayout extends Component {
     }
 
     generateViewColumns(viewCols) {
-        let self = this;
-        let { jobEvents, views } = this.props;
+        let { jobEvents, juttleViews } = this.props;
 
         return viewCols.map(view_id => {
-            let view = views[view_id];
             return (
                 <View
-                    view={view}
-                    views={views}
+                    key={view_id}
+                    view_id={view_id}
+                    juttleView={juttleViews[view_id]}
                     width={100 / viewCols.length}
-                    jobEvents={jobEvents}
-                    addComponentChart={self.addComponentChart.bind(self)}
-                    componentCharts={self.componentCharts}
-                    key={view.sink_id}/>
+                    jobEvents={jobEvents} />
             );
         });
     }
 
     render() {
         let { viewLayout } = this.props;
+        if (!viewLayout) {
+            return false;
+        }
+
         let rows = viewLayout.map((viewRow, index) => {
             return (
                 <div className="flex-row" key={index}>
@@ -64,12 +49,4 @@ class ViewLayout extends Component {
     }
 }
 
-export default connect(
-    state => {
-        return {
-            views: state.views,
-            viewLayout: viewLayoutGen(_.values(state.views)),
-            job_id: state.job_id
-        };
-    }
-)(ViewLayoutWrapper);
+export default ViewLayout;
