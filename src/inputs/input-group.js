@@ -2,14 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import InputContainer from './components/input-container';
 
-const ENTER_KEY = 13;
-
 class InputGroup extends Component {
-    _onKeyUp = (e) => {
-        if (e.keyCode === ENTER_KEY && e.shiftKey) {
-            this.props.onRun();
-        }
-    };
 
     render() {
         const { inputs } = this.props;
@@ -18,7 +11,7 @@ class InputGroup extends Component {
         }
 
         return (
-            <div onKeyUp={this._onKeyUp} className="juttle-client-library inputs-view">
+            <div className="juttle-client-library inputs-view">
                 {inputs.map((input) => <InputContainer key={input.id} input={input} />)}
             </div>
         );
