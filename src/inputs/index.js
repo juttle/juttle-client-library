@@ -7,7 +7,7 @@ import thunk from 'redux-thunk'; // allows for async actions
 import * as ActionCreators from './actions';
 import InputGroup from './input-group';
 import reducers from './reducers';
-import OutriggerAPI from '../utils/api';
+import JuttleServiceHttp from '../utils/http-api';
 
 export default class Input {
     constructor(outriggerUrl, el) {
@@ -22,7 +22,7 @@ export default class Input {
 
         store.dispatch(ActionCreators.updateOutriggerUrl(`http://${outriggerUrl}`));
 
-        this.api = new OutriggerAPI(store.getState().outriggerUrl);
+        this.api = new JuttleServiceHttp(store.getState().outriggerUrl);
 
         render(
             <Provider store={this.store}>
