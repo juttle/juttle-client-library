@@ -2,10 +2,8 @@ import React from 'react';
 import * as ReactDOM from 'react-dom';
 import EventEmitter from 'eventemitter3';
 
-import errors from '../utils/errors';
 import ViewLayout from './view-layout';
-import OutriggerAPI from '../utils/api';
-import JobSocket from '../utils/job-socket';
+import JobManager from '../utils/job-manager';
 import viewLayoutGen from './view-layout-gen';
 import juttleViewGen from './juttle-view-gen';
 
@@ -13,8 +11,11 @@ export default class View {
     constructor(outriggerUrl, el) {
         this.el = el;
         this.outriggerUrl = outriggerUrl;
-        this.api = new OutriggerAPI(`http://${outriggerUrl}`);
         this.jobEvents = new EventEmitter();
+
+        // setup _jobManager
+        this._jobManager = new JobManager(outriggerUrl);
+        this._jobManager.on('message', this._onMessage, this);
 
         ReactDOM.render(
             <ViewLayout jobEvents={this.jobEvents}/>,
@@ -23,48 +24,28 @@ export default class View {
     }
 
     run(bundle, inputValues) {
-        // prevent rerunning until current run is complete
-        if (this._starting) {
-            return;
-        }
-
-        this._starting = true;
         let self = this;
 
-        // incase we're currently running a job, stop the old one
-        return this.stop()
-        .then(() => {
-            return self.api.runJob(bundle, inputValues);
+        return this._jobManager.start(bundle, inputValues)
+        .then(res => {
+            let juttleViews = juttleViewGen(res.views);
+            let viewLayout = viewLayoutGen(res.views);
+
+            ReactDOM.render(
+                <ViewLayout
+                    key={res.job_id}
+                    jobEvents={this.jobEvents}
+                    viewLayout={viewLayout}
+                    juttleViews={juttleViews} />,
+                this.el
+            );
+
+            // return this.jobEvents;
         })
-        .then(job => {
-            if (!job.job_id) {
-                let e = new Error(job.code || job.message || 'runJob error');
-                e.info = job.info;
-                throw e;
-            }
-            this.job_id = job.job_id;
-            self._jobSocket = new JobSocket(`ws://${self.outriggerUrl}/api/v0/jobs/${job.job_id}`);
-
-            return new Promise((resolve, reject) => {
-                self._jobSocket.once('message', (msg) => {
-                    try {
-                        if (msg.type !== 'job_start') {
-                            throw new errors.JobStartError();
-                        }
-
-                        self._instantiateViews(msg.sinks);
-
-                        self._jobSocket.on('message', self._onMessage, self);
-                        self._jobSocket.on('close', self._onClose, self);
-                        self._starting = false;
-                        resolve(self.jobEvents);
-                    } catch (err) {
-                        // if there was an error in this step, abort job
-                        this.stop();
-                        reject(err);
-                    }
-                }, this);
-            });
+        .catch(err => {
+            return self._jobManager.close()
+            .then(() => {
+                throw err; });
         });
     }
 
@@ -78,20 +59,6 @@ export default class View {
         });
     }
 
-    _instantiateViews(views) {
-        let juttleViews = juttleViewGen(views);
-        let viewLayout = viewLayoutGen(views);
-
-        ReactDOM.render(
-            <ViewLayout
-                key={this.job_id}
-                jobEvents={this.jobEvents}
-                viewLayout={viewLayout}
-                juttleViews={juttleViews} />,
-            this.el
-        );
-    }
-
     _onMessage(msg) {
         if (msg.type === 'warning' || msg.type === 'error') {
             this.jobEvents.emit(msg.type, msg[msg.type]);
@@ -100,17 +67,7 @@ export default class View {
         }
     }
 
-    _onClose() {
-        this._jobSocket.removeListener('message', this._onMessage, this);
-        this._jobSocket.removeListener('close', this._onClose, this);
-        this._jobSocket = null;
-    }
-
     stop() {
-        if (this._jobSocket) {
-            return this._jobSocket.close();
-        }
-
-        return Promise.resolve();
+        return this._jobManager.close();
     }
 }
