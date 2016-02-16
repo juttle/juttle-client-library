@@ -15,7 +15,7 @@
     "build:css": "node-sass sass/main.scss dist/juttle-client-library.css",
     "build:lib": "babel src --out-dir lib",
     "build": "npm run build:lib && npm run build:umd && npm run build:css",
-    "test": "mocha --compilers js:babel-register --recursive",
+    "test": "mocha --compilers js:babel-register --recursive --require test/setup.js",
     "lint": "eslint src example test",
     "prepublish": "npm run clean && npm run build"
   },
@@ -46,6 +46,7 @@
     "eslint-plugin-react": "^3.14.0",
     "express": "^4.13.3",
     "extract-text-webpack-plugin": "^0.9.1",
+    "jsdom": "^8.0.2",
     "json-loader": "^0.5.4",
     "mocha": "^2.3.4",
     "mock-socket": "^1.0.6",
@@ -60,6 +61,7 @@
     "webpack-dev-middleware": "^1.4.0"
   },
   "dependencies": {
+    "bluebird": "^3.2.2",
     "eventemitter3": "^1.1.1",
     "immutable": "^3.7.6",
     "isomorphic-fetch": "^2.2.0",
