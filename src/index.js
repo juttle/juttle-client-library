@@ -1,11 +1,11 @@
 import Input from './inputs';
 import View from './view';
-import OutriggerAPI from './utils/api';
+import JuttleServiceHttp from './utils/http-api';
 import Errors from './errors';
 
 export default function Juttle(outriggerUrl) {
     this.outriggerUrl = outriggerUrl;
-    this.api = new OutriggerAPI(`http://${outriggerUrl}`);
+    this.api = new JuttleServiceHttp(`http://${outriggerUrl}`);
 
     /*
      * Describe the views and inputs for a bundle

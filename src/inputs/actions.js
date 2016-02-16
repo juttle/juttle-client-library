@@ -1,4 +1,4 @@
-import OutriggerAPI from '../utils/api';
+import JuttleServiceHttp from '../utils/http-api';
 import _ from 'underscore';
 
 export const CLEAR_INPUTS = 'CLEAR_INPUTS';
@@ -59,7 +59,7 @@ export function updateInputValue(input_id, value) {
             return;
         }
 
-        let api = new OutriggerAPI(getState().outriggerUrl);
+        let api = new JuttleServiceHttp(getState().outriggerUrl);
         api.getInputs(getState().bundle, Object.assign({}, getValuesFromInputs(getState().inputs), {
             [input_id]: value
         }))
