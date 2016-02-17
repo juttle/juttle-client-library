@@ -40,6 +40,8 @@ export default class View extends EventTarget {
                     juttleViews={juttleViews} />,
                 this.el
             );
+
+            return res;
         })
         .catch(err => {
             return self._jobManager.close()
