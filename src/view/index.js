@@ -1,24 +1,25 @@
 import React from 'react';
 import * as ReactDOM from 'react-dom';
-import EventEmitter from 'eventemitter3';
 
+import EventTarget from '../utils/event-target';
 import ViewLayout from './view-layout';
 import JobManager from '../utils/job-manager';
 import viewLayoutGen from './view-layout-gen';
 import juttleViewGen from './juttle-view-gen';
 
-export default class View {
+export default class View extends EventTarget {
     constructor(outriggerUrl, el) {
+        super();
+
         this.el = el;
         this.outriggerUrl = outriggerUrl;
-        this.jobEvents = new EventEmitter();
 
         // setup _jobManager
         this._jobManager = new JobManager(outriggerUrl);
         this._jobManager.on('message', this._onMessage, this);
 
         ReactDOM.render(
-            <ViewLayout jobEvents={this.jobEvents}/>,
+            <ViewLayout jobEvents={this._emitter}/>,
             this.el
         );
     }
@@ -34,13 +35,13 @@ export default class View {
             ReactDOM.render(
                 <ViewLayout
                     key={res.job_id}
-                    jobEvents={this.jobEvents}
+                    jobEvents={this._emitter}
                     viewLayout={viewLayout}
                     juttleViews={juttleViews} />,
                 this.el
             );
 
-            // return this.jobEvents;
+            return res;
         })
         .catch(err => {
             return self._jobManager.close()
@@ -61,9 +62,9 @@ export default class View {
 
     _onMessage(msg) {
         if (msg.type === 'warning' || msg.type === 'error') {
-            this.jobEvents.emit(msg.type, msg[msg.type]);
+            this._emitter.emit(msg.type, msg[msg.type]);
         } else {
-            this.jobEvents.emit(msg.sink_id, msg);
+            this._emitter.emit(msg.sink_id, msg);
         }
     }
 
