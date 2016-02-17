@@ -14,6 +14,14 @@ let view = new client.View(document.getElementById('views'));
 let inputs = new client.Input(document.getElementById('inputs'));
 let error = new client.Errors(document.getElementById('error'));
 
+// handle runtime errors
+view.on('error', runtimeError.bind(null, 'error'));
+view.on('warning', runtimeError.bind(null, 'warning'));
+
+function runtimeError(type, err) {
+    error.render(err);
+}
+
 inputs.render(bundle)
 .catch(err => {
     error.render(err);
