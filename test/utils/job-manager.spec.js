@@ -40,13 +40,6 @@ describe('job-socket', function() {
 
     before(() => {
         global.WebSocket = WebSocket;
-
-        // an unholy hack going on here.
-        // can remove once https://github.com/thoov/mock-socket/issues/71 is resolved
-        if (global.window) {
-            global.window.Event = undefined;
-            global.window.MessageEvent = undefined;
-        }
     });
 
     after(() => {

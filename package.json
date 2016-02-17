@@ -49,7 +49,7 @@
     "jsdom": "^8.0.2",
     "json-loader": "^0.5.4",
     "mocha": "^2.3.4",
-    "mock-socket": "^1.0.6",
+    "mock-socket": "^2.0.0",
     "nock": "^5.2.1",
     "node-sass": "^3.4.2",
     "raw-loader": "^0.5.1",
@@ -63,7 +63,6 @@
   "dependencies": {
     "bluebird": "^3.2.2",
     "eventemitter3": "^1.1.1",
-    "immutable": "^3.7.6",
     "isomorphic-fetch": "^2.2.0",
     "juttle-jsdp": "^0.1.1",
     "juttle-viz": "^0.4.0",
