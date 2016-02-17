@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+const ENTER_KEY = 13;
+
 class TextInput extends Component {
     constructor(props) {
         super(props);
@@ -15,8 +17,18 @@ class TextInput extends Component {
         this.setState({ value: event.target.value});
     }
 
+    _submitValueFromInputEl(value) {
+        this.props.inputUpdate(value);
+    }
+
     _onBlur(event) {
-        this.props.inputUpdate(event.target.value);
+        this._submitValueFromInputEl(event.target.value);
+    }
+
+    _onKeyDown(event) {
+        if (event.keyCode === ENTER_KEY) {
+            this._submitValueFromInputEl(event.target.value);
+        }
     }
 
     componentWillReceiveProps(nextProps) {
@@ -34,6 +46,7 @@ class TextInput extends Component {
                 <input
                     type={this.getType()}
                     className="form-control"
+                    onKeyDown={this._onKeyDown.bind(this)}
                     onBlur={this._onBlur.bind(this)}
                     onChange={this._onChange.bind(this)}
                     value={currentValue} />
