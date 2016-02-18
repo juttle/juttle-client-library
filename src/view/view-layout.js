@@ -41,7 +41,7 @@ class ViewLayout extends Component {
         });
 
         return (
-            <div className="juttle-client-library sink-views">
+            <div className="juttle-client-library views-layout">
                 {rows}
             </div>
         );

@@ -7,11 +7,11 @@ describe('test view-layout generator', () => {
         let layout = viewLayoutGen([
             {
                 options: { row: 1 },
-                sink_id: 'view_1'
+                view_id: 'view_1'
             },
             {
                 options: { row: 1 },
-                sink_id: 'view_2'
+                view_id: 'view_2'
             }
         ]);
 
@@ -24,15 +24,15 @@ describe('test view-layout generator', () => {
         let layout = viewLayoutGen([
             {
                 options: { row: 1 },
-                sink_id: 'view_3'
+                view_id: 'view_3'
             },
             {
                 options: { row: 1, col: 2 },
-                sink_id: 'view_2'
+                view_id: 'view_2'
             },
             {
                 options: { row: 1, col: 1},
-                sink_id: 'view_1'
+                view_id: 'view_1'
             }
         ]);
 
@@ -43,9 +43,9 @@ describe('test view-layout generator', () => {
 
     it('unspecified views should render in default order', () => {
         let layout = viewLayoutGen([
-            { sink_id: 'view_1' },
-            { sink_id: 'view_2' },
-            { sink_id: 'view_3' }
+            { view_id: 'view_1' },
+            { view_id: 'view_2' },
+            { view_id: 'view_3' }
         ]);
 
         expect(layout).to.deep.equal([

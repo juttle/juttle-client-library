@@ -4,7 +4,7 @@
     @import "flexbox";
     @import "variables";
 
-    &.sink-views {
+    &.views-layout {
         @include flex-grow(1);
     }
 

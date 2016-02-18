@@ -14,9 +14,9 @@ const bogusBundle = {
 };
 const bogusJobStart = {
     type: 'job_start',
-    sinks: [{
+    views: [{
         type: 'logger',
-        sink_id: 'view0'
+        view_id: 'view0'
     }]
 };
 
@@ -117,7 +117,7 @@ describe('job-socket', function() {
                 mockSocketServer.send(JSDP.serialize({
                     time: sampleDate,
                     type: 'mark',
-                    sink: 'sink0'
+                    view: 'view0'
                 }));
             });
         });
@@ -147,7 +147,7 @@ describe('job-socket', function() {
                 });
 
                 mockSocketServer.send(JSDP.serialize({
-                    sink_id: 'sink0',
+                    view_id: 'view0',
                     points: points
                 }));
             });
@@ -160,7 +160,7 @@ describe('job-socket', function() {
             const views = [
                 {
                     type: 'logger',
-                    sink_id: 'sink0',
+                    view_id: 'view0',
                     options: {
                         _jut_time_bounds: [
                             {
@@ -178,7 +178,7 @@ describe('job-socket', function() {
                 },
                 {
                     type: 'table',
-                    sink_id: 'sink1',
+                    view_id: 'view1',
                     options: {
                         _jut_time_bounds: [
                             {

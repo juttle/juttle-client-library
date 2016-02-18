@@ -47,7 +47,7 @@ export default (viewArr) => {
         // clean this up a bit
         let arr = [];
         views.forEach((view) => {
-            arr.push(view.sink_id);
+            arr.push(view.view_id);
         });
 
         return arr;
