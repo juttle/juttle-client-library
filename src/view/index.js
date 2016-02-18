@@ -8,14 +8,14 @@ import viewLayoutGen from './view-layout-gen';
 import juttleViewGen from './juttle-view-gen';
 
 export default class View extends EventTarget {
-    constructor(outriggerUrl, el) {
+    constructor(juttleServiceUrl, el) {
         super();
 
         this.el = el;
-        this.outriggerUrl = outriggerUrl;
+        this.juttleServiceUrl = juttleServiceUrl;
 
         // setup _jobManager
-        this._jobManager = new JobManager(outriggerUrl);
+        this._jobManager = new JobManager(juttleServiceUrl);
         this._jobManager.on('message', this._onMessage, this);
 
         ReactDOM.render(

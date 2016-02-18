@@ -6,7 +6,7 @@ export const INPUT_DEFS_UPDATE = 'INPUT_DEFS_UPDATE';
 export const INPUT_VALUE_UPDATE = 'INPUT_VALUE_UPDATE';
 
 export const UPDATE_BUNDLE = 'UPDATE_BUNDLE';
-export const UPDATE_OUTRIGGER_URL = 'UPDATE_OUTRIGGER_URL';
+export const UPDATE_JUTTLE_SERVICE_URL = 'UPDATE_JUTTLE_SERVICE_URL';
 
 export const BEGIN_UPDATE_INPUT_VALUE = 'BEGIN_UPDATE_INPUT_VALUE';
 export const END_UPDATE_INPUT_VALUE = 'END_UPDATE_INPUT_VALUE';
@@ -18,9 +18,9 @@ export function updateBundle(bundle) {
     };
 }
 
-export function updateOutriggerUrl(url) {
+export function updateJuttleServiceUrl(url) {
     return {
-        type: UPDATE_OUTRIGGER_URL,
+        type: UPDATE_JUTTLE_SERVICE_URL,
         payload: url
     };
 }
@@ -59,7 +59,7 @@ export function updateInputValue(input_id, value) {
             return;
         }
 
-        let api = new JuttleServiceHttp(getState().outriggerUrl);
+        let api = new JuttleServiceHttp(getState().juttleServiceUrl);
         api.getInputs(getState().bundle, Object.assign({}, getValuesFromInputs(getState().inputs), {
             [input_id]: value
         }))

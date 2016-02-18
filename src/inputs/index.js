@@ -10,7 +10,7 @@ import reducers from './reducers';
 import JuttleServiceHttp from '../utils/http-api';
 
 export default class Input {
-    constructor(outriggerUrl, el) {
+    constructor(juttleServiceUrl, el) {
 
         this.el = el;
 
@@ -20,9 +20,9 @@ export default class Input {
 
         this.store = store;
 
-        store.dispatch(ActionCreators.updateOutriggerUrl(`http://${outriggerUrl}`));
+        store.dispatch(ActionCreators.updateJuttleServiceUrl(`http://${juttleServiceUrl}`));
 
-        this.api = new JuttleServiceHttp(store.getState().outriggerUrl);
+        this.api = new JuttleServiceHttp(store.getState().juttleServiceUrl);
 
         render(
             <Provider store={this.store}>

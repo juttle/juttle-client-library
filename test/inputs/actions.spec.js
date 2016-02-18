@@ -9,13 +9,13 @@ const mockStore = configureStore(middlewares);
 
 describe('Action Creators', () => {
     it('updateInputValue', (done) => {
-        const outriggerUrl = 'http://localhost:3000';
+        const juttleServiceUrl = 'http://localhost:3000';
         const bundle = {
             program: 'input a: text; input b: dropdown -items [{value: 1, label: \'one\'}, {value: 2, label: a}]; emit -limit 1'
         };
 
         const getState = {
-            outriggerUrl: outriggerUrl,
+            juttleServiceUrl: juttleServiceUrl,
             bundle,
             inputs: [
                 {
@@ -56,7 +56,7 @@ describe('Action Creators', () => {
             }
         ];
 
-        nock(outriggerUrl)
+        nock(juttleServiceUrl)
         .post('/api/v0/prepare', {
             bundle,
             inputs: {
