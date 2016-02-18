@@ -3,9 +3,9 @@ import View from './view';
 import JuttleServiceHttp from './utils/http-api';
 import Errors from './errors';
 
-export default function Juttle(outriggerUrl) {
-    this.outriggerUrl = outriggerUrl;
-    this.api = new JuttleServiceHttp(`http://${outriggerUrl}`);
+export default function Juttle(juttleServiceUrl) {
+    this.juttleServiceUrl = juttleServiceUrl;
+    this.api = new JuttleServiceHttp(`http://${juttleServiceUrl}`);
 
     /*
      * Describe the views and inputs for a bundle
@@ -17,7 +17,7 @@ export default function Juttle(outriggerUrl) {
         });
     };
 
-    this.Input = Input.bind(null, this.outriggerUrl);
-    this.View = View.bind(null, this.outriggerUrl);
+    this.Input = Input.bind(null, this.juttleServiceUrl);
+    this.View = View.bind(null, this.juttleServiceUrl);
     this.Errors = Errors;
 }

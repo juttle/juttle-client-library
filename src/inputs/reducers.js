@@ -24,9 +24,9 @@ function bundle(state = {}, action) {
     return state;
 }
 
-function outriggerUrl(state = '', action) {
+function juttleServiceUrl(state = '', action) {
     switch(action.type) {
-        case Actions.UPDATE_OUTRIGGER_URL:
+        case Actions.UPDATE_JUTTLE_SERVICE_URL:
             return action.payload;
     }
 
@@ -48,5 +48,5 @@ export default combineReducers({
     inputs,
     bundle,
     updatingValueState,
-    outriggerUrl
+    juttleServiceUrl
 });
