@@ -3,7 +3,7 @@ import View from './view';
 import JuttleServiceHttp from './utils/http-api';
 import Errors from './errors';
 
-export default function Juttle(juttleServiceUrl) {
+function Juttle(juttleServiceUrl) {
     this.juttleServiceUrl = juttleServiceUrl;
     this.api = new JuttleServiceHttp(`http://${juttleServiceUrl}`);
 
@@ -21,3 +21,5 @@ export default function Juttle(juttleServiceUrl) {
     this.View = View.bind(null, this.juttleServiceUrl);
     this.Errors = Errors;
 }
+
+export default Juttle;
