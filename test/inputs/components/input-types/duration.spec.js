@@ -1,4 +1,4 @@
-import { getBestNumValueAndUnit } from '../../../src/inputs/components/input-types/duration-input';
+import { getBestNumValueAndUnit } from '../../../../src/inputs/components/input-types/duration-input';
 import moment from 'moment';
 import { expect } from 'chai';
 
