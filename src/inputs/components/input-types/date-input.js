@@ -18,7 +18,7 @@ class DateInput extends Component {
         return (
             <div className='form-group'>
                 <DatePicker
-                    selected={moment(value)}
+                    selected={moment.utc(value)}
                     onChange={this.handleChange.bind(this)} />
             </div>
         );
