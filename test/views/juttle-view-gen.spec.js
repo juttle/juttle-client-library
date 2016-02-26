@@ -12,7 +12,7 @@ describe('test view component generator', () => {
         let components = juttleViewGen([
             {
                 type: 'timechart',
-                sink_id: 'view0',
+                view_id: 'view0',
                 options: {
                     'row': 0,
                     '_jut_time_bounds': []
@@ -20,7 +20,7 @@ describe('test view component generator', () => {
             },
             {
                 type: 'table',
-                sink_id: 'view1',
+                view_id: 'view1',
                 options: {
                     'row': 0,
                     '_jut_time_bounds': []
@@ -35,7 +35,7 @@ describe('test view component generator', () => {
         try {
             juttleViewGen([{
                 type: 'timechart',
-                sink_id: 'view0',
+                view_id: 'view0',
                 options: {
                     'unknown_option': true
                 }
@@ -55,14 +55,14 @@ describe('test view component generator', () => {
             juttleViewGen([
                 {
                     type: 'barchart',
-                    sink_id: 'view0',
+                    view_id: 'view0',
                     options: {
                         'unknown_option': true
                     }
                 },
                 {
                     type: 'timechart',
-                    sink_id: 'view1',
+                    view_id: 'view1',
                     options: {
                         'unknown_option': true
                     }
@@ -82,7 +82,7 @@ describe('test view component generator', () => {
         try {
             juttleViewGen([{
                 type: 'does_not_exist',
-                sink_id: 'view0',
+                view_id: 'view0',
                 options: {}
             }]);
         } catch (err) {

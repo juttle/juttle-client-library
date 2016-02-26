@@ -49,7 +49,7 @@ export default class JobSocket extends EventTarget {
                     self._socket.onmessage = self._onMessage.bind(this);
                     resolve({
                         job_id: job.job_id,
-                        views: msg.sinks
+                        views: msg.views
                     });
                 };
             });

@@ -64,7 +64,7 @@ export default class View extends EventTarget {
         if (msg.type === 'warning' || msg.type === 'error') {
             this._emitter.emit(msg.type, msg[msg.type]);
         } else {
-            this._emitter.emit(msg.sink_id, msg);
+            this._emitter.emit(msg.view_id, msg);
         }
     }
 

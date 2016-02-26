@@ -24,7 +24,7 @@ export default (views) => {
         }
 
         try {
-            juttleViews[view.sink_id] = new ViewConstructor(
+            juttleViews[view.view_id] = new ViewConstructor(
                 juttleViewConstructorOptions,
                 _.values(juttleViews)
             );

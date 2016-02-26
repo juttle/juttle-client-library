@@ -13,7 +13,7 @@ class View extends Component {
             case 'tick':
                 this.props.juttleView.consume_tick(msg.time);
                 break;
-            case 'sink_end':
+            case 'view_end':
                 this.props.juttleView.consume_eof();
                 break;
 
