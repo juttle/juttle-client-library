@@ -1,10 +1,21 @@
 # Change Log
 This file documents all notable changes to juttle-client-library. The release numbering uses [semantic versioning](http://semver.org).
 
-## 0.5.0 
+## 0.6.0
+
+### Minor Changes
+- expect websocket messages to contain view* instead of sink* properties [[#55](https://github.com/juttle/juttle-client-library/pull/55)]
+- package.json: bump juttle-viz to 0.5.0 [[#60](https://github.com/juttle/juttle-client-library/pull/60)]
+- package.json: bump juttle-jsdp to 0.3.0 [[#59](https://github.com/juttle/juttle-client-library/pull/59)]
+
+### Bug Fixes
+- Fix module export so it works properly with commonjs [[#57](https://github.com/juttle/juttle-client-library/pull/57)]
+- date input: display time in utc [[#58](https://github.com/juttle/juttle-client-library/pull/58)]
+
+## 0.5.0
 
 ### Major Changes
-- Rework of job-manager api. Includes start function that returns a promise when a job has been created and the `job_start` event has been received 
+- Rework of job-manager api. Includes start function that returns a promise when a job has been created and the `job_start` event has been received
 over the websocket [[#50](https://github.com/juttle/juttle-client-library/pull/50)]
 - Make View object subscribable. Can now listen to events from `job-manager` by subscribing with `on`. [[#53](https://github.com/juttle/juttle-client-library/pull/53)]
 
