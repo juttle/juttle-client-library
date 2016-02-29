@@ -17,6 +17,9 @@ export default class View extends EventTarget {
         // setup _jobManager
         this._jobManager = new JobManager(juttleServiceUrl);
         this._jobManager.on('message', this._onMessage, this);
+        this._jobManager.on('job-status', (status) => {
+            this._emitter.emit('job-status', status);
+        });
 
         ReactDOM.render(
             <ViewLayout jobEvents={this._emitter}/>,

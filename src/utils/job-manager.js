@@ -22,6 +22,7 @@ export default class JobSocket extends EventTarget {
 
         this.host = host;
         this.secure = opts.secure || false;
+        this._lastStatus = this.getStatus();
     }
 
     start(bundle, inputValues) {
@@ -35,8 +36,12 @@ export default class JobSocket extends EventTarget {
             return new Promise((resolve, reject) => {
                 let socketUrl = `ws://${this.host}${API_PREFIX}/jobs/${job.job_id}`;
                 self._socket = new WebSocket(socketUrl);
-                self._socket.onclose = (event) => { this._emitter.emit('close'); };
-                self._socket.onerror = this._onError.bind(this);
+                self._socket.onopen = this._onOpenOrClose;
+                self._socket.onclose = this._onOpenOrClose;
+                self._socket.onerror = this._onError;
+
+                // we just started the socket, we're in opening state
+                self._onStatusChanged();
 
                 // make sure first message is job_start
                 self._socket.onmessage = (event) => {
@@ -46,7 +51,7 @@ export default class JobSocket extends EventTarget {
                         reject(new errors.JobStartError());
                     }
 
-                    self._socket.onmessage = self._onMessage.bind(this);
+                    self._socket.onmessage = self._onMessage;
                     resolve({
                         job_id: job.job_id,
                         views: msg.views
@@ -54,6 +59,15 @@ export default class JobSocket extends EventTarget {
                 };
             });
         });
+    }
+
+    _onStatusChanged() {
+        let currentStatus = this.getStatus();
+
+        if (this._lastStatus !== currentStatus) {
+            this._emitter.emit('job-status', currentStatus);
+            this._lastStatus = currentStatus;
+        }
     }
 
     getStatus() {
@@ -68,13 +82,17 @@ export default class JobSocket extends EventTarget {
         this._socket.send(JSON.stringify(msg));
     }
 
-    _onError(event) {
+    _onOpenOrClose = (event) => {
+        this._onStatusChanged();
+        this._emitter.emit(event.type, event);
+    };
+
+    _onError = (event) => {
         this._emitter.emit('error', JSON.parse(event.data));
-    }
+    };
 
-    _onMessage(event) {
+    _onMessage = (event) => {
         let msg = JSDP.deserialize(event.data);
-
 
         // manage pings so the rest of the app doesn't have to
         if (msg.type === 'ping') {
@@ -86,7 +104,7 @@ export default class JobSocket extends EventTarget {
         }
 
         this._emitter.emit('message', msg);
-    }
+    };
 
     close() {
         let self = this;
@@ -101,6 +119,9 @@ export default class JobSocket extends EventTarget {
             });
 
             self._socket.close();
+
+            // readyState is now closing, trigger change
+            self._onStatusChanged();
         });
     }
 

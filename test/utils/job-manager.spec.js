@@ -1,9 +1,13 @@
 import { WebSocket, Server } from 'mock-socket';
 import nock from 'nock';
-import { expect } from 'chai';
+import chai from 'chai';
+import sinon from 'sinon'   ;
+import sinonChai from 'sinon-chai';
 import JobManager, { JobStatus } from '../../src/utils/job-manager';
 import JSDP from 'juttle-jsdp';
 
+let expect = chai.expect;
+chai.use(sinonChai);
 
 const API_PREFIX = '/api/v0';
 
@@ -61,7 +65,7 @@ describe('job-socket', function() {
         });
     });
 
-    describe('admin functionality', (done) => {
+    describe('admin functionality', () => {
         it('actually closes socket on stop', (done) => {
             mockSocketServer = createSocketServer();
 
@@ -89,6 +93,62 @@ describe('job-socket', function() {
                 });
 
                 mockSocketServer.send({ type: 'ping' });
+            });
+        });
+    });
+
+    describe('status-change events', () => {
+        // disable until thoov/mock-socket#74 is resolved
+        it.skip('receive proper job-status events on job closed from server', () => {
+            mockSocketServer = createSocketServer();
+
+            let cb = sinon.spy();
+            jobManager.on('job-status', cb);
+
+            return jobManager.start(bogusBundle)
+            .then(() => {
+                // send a bogus messages
+                mockSocketServer.send(JSDP.serialize({
+                    time: new Date(2000),
+                    type: 'mark',
+                    view: 'view0'
+                }));
+
+                return new Promise(resolve => {
+                    jobManager.on('close', resolve);
+                    mockSocketServer.close();
+                });
+            })
+            .then(() => {
+                expect(cb).to.have.callCount(3);
+                expect(cb.args).to.deep.equal([ [0], [1], [3] ]);
+            });
+        });
+
+        it('receive proper job-status events on job terminated from client', () => {
+            mockSocketServer = createSocketServer();
+
+            let cb = sinon.spy();
+            jobManager.on('job-status', cb);
+
+            return jobManager.start(bogusBundle)
+            .then(() => {
+                // send a bogus messages
+                mockSocketServer.send(JSDP.serialize({
+                    time: new Date(2000),
+                    type: 'mark',
+                    view: 'view0'
+                }));
+
+                return jobManager.close();
+            })
+            .then(() => {
+                // because mock-socket close happens synchronously, we miss the
+                // CLOSING event. Replace two lines below with one line below
+                // once thoov/mock-socket#76
+                // expect(cb.args).to.deep.equal([ [0], [1], [2], [3] ]);
+                expect(cb.args).to.deep.equal([ [0], [1], [3] ]);
+                expect(cb).to.have.callCount(3);
             });
         });
     });
