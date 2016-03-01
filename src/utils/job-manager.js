@@ -38,8 +38,8 @@ export default class JobSocket extends EventTarget {
             return new Promise((resolve, reject) => {
                 let socketUrl = `ws://${this.host}${API_PREFIX}/jobs/${job.job_id}`;
                 self._socket = new WebSocket(socketUrl);
-                self._socket.onopen = this._onOpenOrClose;
-                self._socket.onclose = this._onOpenOrClose;
+                self._socket.onopen = this._onOpen;
+                self._socket.onclose = this._onClose;
                 self._socket.onerror = this._onError;
 
                 // make sure first message is job_start
@@ -71,13 +71,14 @@ export default class JobSocket extends EventTarget {
         this._socket.send(JSON.stringify(msg));
     }
 
-    _onOpenOrClose = (event) => {
-        if (event.type === 'open') {
-            this._setStatus(JobStatus.RUNNING);
-        } else {
-            this._setStatus(JobStatus.STOPPED);
-        }
-        this._emitter.emit(event.type, event);
+    _onOpen = (event) => {
+        this._setStatus(JobStatus.RUNNING);
+        this._emitter.emit('open', event);
+    };
+
+    _onClose = (event) => {
+        this._setStatus(JobStatus.STOPPED);
+        this._emitter.emit('close', event);
     };
 
     _onError = (event) => {
