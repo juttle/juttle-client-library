@@ -66,17 +66,16 @@ describe('job-socket', function() {
     });
 
     describe('admin functionality', () => {
-        it('actually closes socket on stop', (done) => {
+        it('actually closes socket on stop', () => {
             mockSocketServer = createSocketServer();
 
-            jobManager.start(bogusBundle)
+            return jobManager.start(bogusBundle)
             .then(() => {
-                expect(jobManager.getStatus()).to.equal(JobStatus.OPEN);
+                expect(jobManager.status).to.equal(JobStatus.RUNNING);
                 return jobManager.close();
             })
             .then(() => {
-                expect(jobManager.getStatus()).to.equal(JobStatus.CLOSED);
-                done();
+                expect(jobManager.status).to.equal(JobStatus.STOPPED);
             });
         });
 
@@ -121,7 +120,11 @@ describe('job-socket', function() {
             })
             .then(() => {
                 expect(cb).to.have.callCount(3);
-                expect(cb.args).to.deep.equal([ [0], [1], [3] ]);
+                expect(cb.args).to.deep.equal([
+                    [JobStatus.STARTING],
+                    [JobStatus.RUNNING],
+                    [JobStatus.STOPPED]
+                ]);
             });
         });
 
@@ -143,11 +146,11 @@ describe('job-socket', function() {
                 return jobManager.close();
             })
             .then(() => {
-                // because mock-socket close happens synchronously, we miss the
-                // CLOSING event. Replace two lines below with one line below
-                // once thoov/mock-socket#76
-                // expect(cb.args).to.deep.equal([ [0], [1], [2], [3] ]);
-                expect(cb.args).to.deep.equal([ [0], [1], [3] ]);
+                expect(cb.args).to.deep.equal([
+                    [JobStatus.STARTING],
+                    [JobStatus.RUNNING],
+                    [JobStatus.STOPPED]
+                ]);
                 expect(cb).to.have.callCount(3);
             });
         });

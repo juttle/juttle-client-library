@@ -8,10 +8,9 @@ import * as http from './http-api';
 const API_PREFIX = '/api/v0';
 
 export let JobStatus = {
-    CONNECTING: 0, // from https://developer.mozilla.org/en-US/docs/Web/API/WebSocket#Ready_state_constants
-    OPEN: 1,
-    CLOSING: 2,
-    CLOSED: 3
+    STARTING: 'STARTING',
+    RUNNING: 'RUNNING',
+    STOPPED: 'STOPPED'
 };
 
 export default class JobSocket extends EventTarget {
@@ -22,11 +21,14 @@ export default class JobSocket extends EventTarget {
 
         this.host = host;
         this.secure = opts.secure || false;
-        this._lastStatus = this.getStatus();
+
+        this.status = JobStatus.STOPPED;
     }
 
     start(bundle, inputValues) {
         let self = this;
+
+        this._setStatus(JobStatus.STARTING);
 
         return this.close()
         .then(() => {
@@ -39,9 +41,6 @@ export default class JobSocket extends EventTarget {
                 self._socket.onopen = this._onOpenOrClose;
                 self._socket.onclose = this._onOpenOrClose;
                 self._socket.onerror = this._onError;
-
-                // we just started the socket, we're in opening state
-                self._onStatusChanged();
 
                 // make sure first message is job_start
                 self._socket.onmessage = (event) => {
@@ -61,20 +60,10 @@ export default class JobSocket extends EventTarget {
         });
     }
 
-    _onStatusChanged() {
-        let currentStatus = this.getStatus();
-
-        if (this._lastStatus !== currentStatus) {
-            this._emitter.emit('job-status', currentStatus);
-            this._lastStatus = currentStatus;
-        }
-    }
-
-    getStatus() {
-        if (!this._socket) {
-            return JobStatus.CLOSED;
-        } else {
-            return this._socket.readyState;
+    _setStatus(newStatus) {
+        if (this.status !== newStatus) {
+            this.status = newStatus;
+            this._emitter.emit('job-status', this.status);
         }
     }
 
@@ -83,7 +72,11 @@ export default class JobSocket extends EventTarget {
     }
 
     _onOpenOrClose = (event) => {
-        this._onStatusChanged();
+        if (event.type === 'open') {
+            this._setStatus(JobStatus.RUNNING);
+        } else {
+            this._setStatus(JobStatus.STOPPED);
+        }
         this._emitter.emit(event.type, event);
     };
 
@@ -109,7 +102,7 @@ export default class JobSocket extends EventTarget {
     close() {
         let self = this;
         return new Promise((resolve, reject) => {
-            if (self.getStatus() === JobStatus.CLOSED) {
+            if (!self._socket || self._socket.readyState === WebSocket.CLOSED) {
                 resolve();
                 return;
             }
@@ -119,9 +112,6 @@ export default class JobSocket extends EventTarget {
             });
 
             self._socket.close();
-
-            // readyState is now closing, trigger change
-            self._onStatusChanged();
         });
     }
 
