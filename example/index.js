@@ -1,18 +1,17 @@
 import '../sass/main.scss';
 
-import Juttle from '../src';
-
+import { Views, Inputs, Errors} from '../src';
 import program from './example.juttle';
 
-let client = new Juttle('localhost:8080');
+const JUTTLE_SERVICE_HOST = 'localhost:8080';
+
 let bundle = {
     program
 };
 
-
-let view = new client.View(document.getElementById('views'));
-let inputs = new client.Input(document.getElementById('inputs'));
-let error = new client.Errors(document.getElementById('error'));
+let view = new Views(JUTTLE_SERVICE_HOST, document.getElementById('views'));
+let inputs = new Inputs(JUTTLE_SERVICE_HOST, document.getElementById('inputs'));
+let error = new Errors(document.getElementById('error'));
 
 // handle runtime errors
 view.on('error', runtimeError.bind(null, 'error'));

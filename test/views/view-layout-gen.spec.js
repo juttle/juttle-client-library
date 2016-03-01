@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 
-import viewLayoutGen from '../../src/view/view-layout-gen';
+import viewLayoutGen from '../../src/views/view-layout-gen';
 
 describe('test view-layout generator', () => {
     it('place views in same row', () => {
