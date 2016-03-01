@@ -1,7 +1,7 @@
 import _ from 'underscore';
 import { expect } from 'chai';
 
-import juttleViewGen from '../../src/view/juttle-view-gen';
+import juttleViewGen from '../../src/views/juttle-view-gen';
 
 window.Event = undefined;
 

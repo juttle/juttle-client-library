@@ -67,7 +67,7 @@ export function getBundle(url, path) {
     return makeRequest(`${url}${API_PREFIX}/paths${path}`);
 }
 
-export default class JuttleServiceHttp {
+export default class HttpApi {
     constructor(serviceUrl) {
         if (!serviceUrl.startsWith('http')) {
             throw new Error('Url scheme must be \'http\' or \'https\'');
