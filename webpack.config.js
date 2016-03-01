@@ -6,7 +6,7 @@ module.exports = {
         new webpack.NoErrorsPlugin()
     ],
     output: {
-        output: 'juttle-client-library',
+        library: "JuttleClientLibrary",
         libraryTarget: 'umd'
     },
     module: {
