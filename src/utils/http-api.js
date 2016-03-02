@@ -13,7 +13,8 @@ function makeRequest(uri, options) {
             .then(body => {
                 resolve([res, body]);
             });
-        });
+        })
+        .catch(err => reject(err));
     })
     .spread((res, body) => {
         if (res.status >= 200 && res.status < 300) {
