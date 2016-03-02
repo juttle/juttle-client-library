@@ -42,17 +42,21 @@ export function getInputs (url, bundle, inputs = {}) {
     .then(parsedBody => JSDP.deserialize(parsedBody));
 }
 
-export function runJob(url, bundle, inputs = {}) {
+export function runJob(url, bundle, inputs = {}, addDebugLogs = false) {
+    
+    var body = {
+        bundle,
+        inputs: JSDP.serialize(inputs, { toObject: true }),
+        debug: addDebugLogs
+    };
+    
     return makeRequest(`${url}${API_PREFIX}/jobs`, {
         method: 'post',
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({
-            bundle,
-            inputs: JSDP.serialize(inputs, { toObject: true })
-        })
+        body: JSON.stringify(body)
     });
 }
 
