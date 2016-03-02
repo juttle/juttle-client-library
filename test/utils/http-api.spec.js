@@ -1,7 +1,11 @@
 import nock from 'nock';
-import { expect } from 'chai';
+import chai from 'chai';
+import chaiAsPromised from 'chai-as-promised';
 
 import JuttleServiceHttp, * as http from '../../src/utils/http-api';
+
+chai.use(chaiAsPromised);
+const { expect } = chai;
 
 const API_PREFIX = '/api/v0';
 const juttleServiceUrl = 'http://localhost:3000';
@@ -14,7 +18,7 @@ describe('http-api', () => {
     describe('instantiating class', () => {
         it('without http:// https:// throws error', () => {
             let errorMsg = 'Url scheme must be \'http\' or \'https\'';
-            
+
             expect(() => {
                 new JuttleServiceHttp('localhost:8080');
             }).to.throw(errorMsg);
@@ -79,5 +83,10 @@ describe('http-api', () => {
             expect(err.info).to.deep.equal({ info: 'info' });
             done();
         });
+    });
+
+    it('non-existent url throws error', () => {
+        let runPromise = http.runJob('http://blah', {});
+        return expect(runPromise).to.be.rejectedWith(/ENOTFOUND blah/);
     });
 });
