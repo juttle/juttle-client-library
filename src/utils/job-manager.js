@@ -93,8 +93,9 @@ export default class JobSocket extends EventTarget {
             this.send({
                 type: 'pong'
             });
-
             return;
+        } else if (msg.type === 'job_end') {
+            this.close();
         }
 
         this._emitter.emit('message', msg);

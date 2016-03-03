@@ -94,6 +94,28 @@ describe('job-socket', function() {
                 mockSocketServer.send({ type: 'ping' });
             });
         });
+
+        it('closes socket on job_end event', () => {
+            mockSocketServer = createSocketServer();
+
+            return jobManager.start(bogusBundle)
+            .then(() => {
+                expect(jobManager.status).to.equal(JobStatus.RUNNING);
+
+                let statusStub = sinon.stub();
+                let closeStub = sinon.stub();
+                jobManager.once('job-status', statusStub);
+                jobManager.once('close', closeStub);
+
+                mockSocketServer.send({
+                    'type': 'job_end'
+                });
+
+                expect(statusStub).to.have.been.calledWith(JobStatus.STOPPED);
+                expect(closeStub).to.have.been.called;
+                expect(jobManager._socket.readyState).to.equal(WebSocket.CLOSED);
+            });
+        });
     });
 
     describe('status-change events', () => {
