@@ -1,6 +1,11 @@
 # Change Log
 This file documents all notable changes to juttle-client-library. The release numbering uses [semantic versioning](http://semver.org).
 
+## 0.6.1
+
+### Bug Fixes
+- fix situation where some errors were being swallowed by view.run() [[#68](https://github.com/juttle/juttle-client-library/pull/68)]
+
 ## 0.6.0
 
 ### Minor Changes
