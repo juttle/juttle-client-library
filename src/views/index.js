@@ -3,9 +3,11 @@ import * as ReactDOM from 'react-dom';
 
 import EventTarget from '../utils/event-target';
 import ViewLayout from './view-layout';
-import JobManager from '../utils/job-manager';
+import JobManager, { JobStatus } from '../utils/job-manager';
 import viewLayoutGen from './view-layout-gen';
 import juttleViewGen from './juttle-view-gen';
+
+export let ViewStatus = JobStatus;
 
 export default class View extends EventTarget {
     constructor(juttleServiceUrl, el) {
@@ -51,6 +53,10 @@ export default class View extends EventTarget {
             .then(() => {
                 throw err; });
         });
+    }
+
+    getStatus() {
+        return this._jobManager.status;
     }
 
     clear() {
