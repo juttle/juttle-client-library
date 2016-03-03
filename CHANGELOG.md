@@ -8,6 +8,7 @@ This file documents all notable changes to juttle-client-library. The release nu
 
 ### Minor Changes
 - Change job-manager status to `CONNECTING`, `RUNNING` and `STOPPED`. Add subscribable `job-status` event to `job-manager` and `View` class. [#62](https://github.com/juttle/juttle-client-library/pull/62)
+- `job-manager`- close websocket when `job_end` message is received from juttle-service [#67](https://github.com/juttle/juttle-client-library/pull/67)
 
 ## 0.6.0
 

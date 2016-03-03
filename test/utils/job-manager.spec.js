@@ -11,12 +11,12 @@ chai.use(sinonChai);
 
 const API_PREFIX = '/api/v0';
 
-const bogusJobId = 'job-id';
-const bogusBundle = {
+const testJobId = 'job-id';
+const testBundle = {
     program: 'emit',
     modules: []
 };
-const bogusJobStart = {
+const testJobStart = {
     type: 'job_start',
     views: [{
         type: 'logger',
@@ -25,12 +25,12 @@ const bogusJobStart = {
 };
 
 function createSocketServer(jobStart, jobId) {
-    jobId = jobId || bogusJobId;
-    jobStart = jobStart || bogusJobStart;
+    jobId = jobId || testJobId;
+    jobStart = jobStart || testJobStart;
 
-    let mockSocketServer = new Server(`ws://localhost:8080${API_PREFIX}/jobs/${bogusJobId}`);
+    let mockSocketServer = new Server(`ws://localhost:8080${API_PREFIX}/jobs/${testJobId}`);
     mockSocketServer.on('connection', () => {
-        mockSocketServer.send(bogusJobStart);
+        mockSocketServer.send(testJobStart);
     });
 
     return mockSocketServer;
@@ -52,8 +52,8 @@ describe('job-socket', function() {
 
     beforeEach(() => {
         nock(`http://localhost:8080${API_PREFIX}`)
-            .post('/jobs', { bundle: bogusBundle })
-            .reply(200, { job_id: bogusJobId });
+            .post('/jobs', { bundle: testBundle })
+            .reply(200, { job_id: testJobId });
     });
 
     afterEach(() => {
@@ -69,7 +69,7 @@ describe('job-socket', function() {
         it('actually closes socket on stop', () => {
             mockSocketServer = createSocketServer();
 
-            return jobManager.start(bogusBundle)
+            return jobManager.start(testBundle)
             .then(() => {
                 expect(jobManager.status).to.equal(JobStatus.RUNNING);
                 return jobManager.close();
@@ -82,7 +82,7 @@ describe('job-socket', function() {
         it('sends back pong on ping', (done) => {
             mockSocketServer = createSocketServer();
 
-            jobManager.start(bogusBundle)
+            jobManager.start(testBundle)
             .then(() => {
                 mockSocketServer.on('message', (event) => {
                     expect(JSON.parse(event)).to.deep.equal({
@@ -92,6 +92,28 @@ describe('job-socket', function() {
                 });
 
                 mockSocketServer.send({ type: 'ping' });
+            });
+        });
+
+        it('closes socket on job_end event', () => {
+            mockSocketServer = createSocketServer();
+
+            return jobManager.start(testBundle)
+            .then(() => {
+                expect(jobManager.status).to.equal(JobStatus.RUNNING);
+
+                let statusStub = sinon.stub();
+                let closeStub = sinon.stub();
+                jobManager.once('job-status', statusStub);
+                jobManager.once('close', closeStub);
+
+                mockSocketServer.send({
+                    'type': 'job_end'
+                });
+
+                expect(statusStub).to.have.been.calledWith(JobStatus.STOPPED);
+                expect(closeStub).to.have.been.called;
+                expect(jobManager._socket.readyState).to.equal(WebSocket.CLOSED);
             });
         });
     });
@@ -104,7 +126,7 @@ describe('job-socket', function() {
             let cb = sinon.spy();
             jobManager.on('job-status', cb);
 
-            return jobManager.start(bogusBundle)
+            return jobManager.start(testBundle)
             .then(() => {
                 // send a bogus messages
                 mockSocketServer.send(JSDP.serialize({
@@ -134,7 +156,7 @@ describe('job-socket', function() {
             let cb = sinon.spy();
             jobManager.on('job-status', cb);
 
-            return jobManager.start(bogusBundle)
+            return jobManager.start(testBundle)
             .then(() => {
                 // send a bogus messages
                 mockSocketServer.send(JSDP.serialize({
@@ -162,7 +184,7 @@ describe('job-socket', function() {
 
             mockSocketServer = createSocketServer();
 
-            jobManager.start(bogusBundle)
+            jobManager.start(testBundle)
             .then((views) => {
                 jobManager.once('message', (payload) => {
                     expect(payload.time).to.be.a('date');
@@ -195,7 +217,7 @@ describe('job-socket', function() {
 
             mockSocketServer = createSocketServer();
 
-            jobManager.start(bogusBundle)
+            jobManager.start(testBundle)
             .then((views) => {
                 jobManager.once('message', (payload) => {
                     expect(payload.points).to.deep.equal(points);
@@ -250,7 +272,7 @@ describe('job-socket', function() {
                 views: views
             }));
 
-            jobManager.start(bogusBundle)
+            jobManager.start(testBundle)
             .then((views) => {
                 expect(views).to.deep.equal(views);
                 done();
