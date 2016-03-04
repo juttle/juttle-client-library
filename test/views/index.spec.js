@@ -4,8 +4,7 @@ import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 import EventEmitter from 'eventemitter3';
 
-import JobManager, { JobStatus } from '../../src/utils/job-manager';
-import Views, { ViewStatus } from '../../src/views';
+import { JobManager, JobStatus, Views, ViewStatus } from '../../src';
 
 chai.use(sinonChai);
 const { expect } = chai;
@@ -33,7 +32,7 @@ describe('view object', () => {
             });
         });
 
-        it.only('view-status event', () => {
+        it('view-status event', () => {
             let jobEvent = new EventEmitter();
 
             // override JobManager start

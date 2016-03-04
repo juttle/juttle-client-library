@@ -3,7 +3,7 @@ import nock from 'nock';
 import chai from 'chai';
 import sinon from 'sinon'   ;
 import sinonChai from 'sinon-chai';
-import JobManager, { JobStatus } from '../../src/utils/job-manager';
+import { JobManager, JobStatus } from '../../src';
 import JSDP from 'juttle-jsdp';
 
 let expect = chai.expect;
