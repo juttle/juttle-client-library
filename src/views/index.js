@@ -27,10 +27,10 @@ export default class View extends EventTarget {
         );
     }
 
-    run(bundle, inputValues) {
+    run(bundle, inputValues, addDebugLogs) {
         let self = this;
 
-        return this._jobManager.start(bundle, inputValues)
+        return this._jobManager.start(bundle, inputValues, addDebugLogs)
         .then(res => {
             let juttleViews = juttleViewGen(res.views);
             let viewLayout = viewLayoutGen(res.views);
@@ -66,6 +66,8 @@ export default class View extends EventTarget {
     _onMessage(msg) {
         if (msg.type === 'warning' || msg.type === 'error') {
             this._emitter.emit(msg.type, msg[msg.type]);
+        } else if (msg.type === 'log') {
+            this._emitter.emit(msg.type, msg);
         } else {
             this._emitter.emit(msg.view_id, msg);
         }

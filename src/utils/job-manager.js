@@ -25,14 +25,14 @@ export default class JobSocket extends EventTarget {
         this.status = JobStatus.STOPPED;
     }
 
-    start(bundle, inputValues) {
+    start(bundle, inputValues, addDebugLogs) {
         let self = this;
 
         this._setStatus(JobStatus.STARTING);
 
         return this.close()
         .then(() => {
-            return http.runJob(`http://${this.host}`, bundle, inputValues);
+            return http.runJob(`http://${this.host}`, bundle, inputValues, addDebugLogs);
         })
         .then(job => {
             return new Promise((resolve, reject) => {
