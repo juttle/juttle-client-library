@@ -25,7 +25,7 @@ class View extends Component {
     }
 
     componentDidMount() {
-        window.addEventListener('resize', this._setChartDimensions.bind(this));
+        window.addEventListener('resize', this._setChartDimensions);
 
         setTimeout(() => {
             if (this.props.juttleView.visuals) {
@@ -44,9 +44,9 @@ class View extends Component {
         this.props.juttleView.destroy();
     }
 
-    _setChartDimensions() {
+    _setChartDimensions = () => {
         this.props.juttleView.setDimensions(null, this.refs.chartParent.offsetWidth, 500);
-    }
+    };
 
     render() {
         let style = { width: this.props.width + '%' };
