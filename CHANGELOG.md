@@ -9,6 +9,8 @@ This file documents all notable changes to juttle-client-library. The release nu
 ### Minor Changes
 - Change job-manager status to `CONNECTING`, `RUNNING` and `STOPPED`. Add subscribable `job-status` event to `job-manager` and `View` class. [#62](https://github.com/juttle/juttle-client-library/pull/62)
 - `job-manager`- close websocket when `job_end` message is received from juttle-service [#67](https://github.com/juttle/juttle-client-library/pull/67)
+- Add `getStatus` function to Views Class exported from `Views`. `ViewStatus` is exactly the same thing as `JobStatus` and is exported from `Views`.
+[#70](https://github.com/juttle/juttle-client-library/pull/70)
 
 ## 0.6.0
 
@@ -35,7 +37,7 @@ Released 2016-02-12
 ### Major Changes
 - change input.getValues to return a promise and text/number input to update onBlur [[#43](https://github.com/juttle/juttle-client-library/pull/43)]
 
-## 0.3.0 
+## 0.3.0
 
 ### Major Changes
 - Add error reporting for invalid JuttleView parameters.
