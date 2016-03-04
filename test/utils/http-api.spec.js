@@ -89,4 +89,17 @@ describe('http-api', () => {
         let runPromise = http.runJob('http://blah', {});
         return expect(runPromise).to.be.rejectedWith(/ENOTFOUND blah/);
     });
+    
+    it('create job call receives debug param', () => {
+        let addDebugLogs = true;
+        
+        nock(`${juttleServiceUrl}${API_PREFIX}`)
+            .post('/jobs', {debug: addDebugLogs})
+            .reply(200, {});
+
+        return http.runJob(juttleServiceUrl, {}, {}, addDebugLogs)
+        .catch((err) => {
+            throw new Error('Debug flag was not set: ' + err.message.substr(err.message.indexOf('{')));
+        });
+    });
 });

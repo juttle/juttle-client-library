@@ -29,22 +29,24 @@ function makeRequest(uri, options) {
 }
 
 export function getInputs (url, bundle, inputs = {}) {
+    let body = {
+        bundle,
+        inputs: JSDP.serialize(inputs, { toObject: true })
+    };
+    
     return makeRequest(`${url}${API_PREFIX}/prepare`, {
         method: 'post',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({
-            bundle,
-            inputs: JSDP.serialize(inputs, { toObject: true })
-        })
+        body: JSON.stringify(body)
     })
     .then(parsedBody => JSDP.deserialize(parsedBody));
 }
 
 export function runJob(url, bundle, inputs = {}, addDebugLogs = false) {
     
-    var body = {
+    let body = {
         bundle,
         inputs: JSDP.serialize(inputs, { toObject: true }),
         debug: addDebugLogs
