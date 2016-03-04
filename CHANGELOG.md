@@ -12,6 +12,10 @@ This file documents all notable changes to juttle-client-library. The release nu
 - Add `getStatus` function to Views Class exported from `Views`. `ViewStatus` is exactly the same thing as `JobStatus` and is exported from `Views`.
 [#70](https://github.com/juttle/juttle-client-library/pull/70)
 
+### Bug Fixes
+- Fix offsetWidth undefined error on window resize.
+[#71](https://github.com/juttle/juttle-client-library/pull/71)
+
 ## 0.6.0
 
 ### Minor Changes
