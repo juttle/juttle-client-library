@@ -13,7 +13,7 @@ export let JobStatus = {
     STOPPED: 'STOPPED'
 };
 
-export default class JobSocket extends EventTarget {
+export default class JobManager extends EventTarget {
     constructor(host, opts) {
         super();
 
