@@ -39,13 +39,9 @@
     }
 }
 
-// This is outside of inputs view because the calendar popup
-// that react-datepicker creates is a child of the body instead
-// of the element in which the react-datepicker component resides.
-@import "../node_modules/react-datepicker/dist/react-datepicker";
-
 .inputs-view {
     @import "../node_modules/react-select/dist/react-select";
+    @import "../node_modules/react-datepicker/dist/react-datepicker";
 
     .duration-input {
         display: flex;
