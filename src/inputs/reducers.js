@@ -1,11 +1,12 @@
 import { combineReducers } from 'redux';
+import inputTransformers from './input-transformers';
 
 import * as Actions from './actions';
 
-function inputs(state = [], action) {
+export function inputs(state = [], action) {
     switch (action.type) {
         case Actions.INPUT_DEFS_UPDATE:
-            return action.payload;
+            return action.payload.map(inputTransformers.transformInput);
         case Actions.CLEAR_INPUTS:
             return [];
         default:
