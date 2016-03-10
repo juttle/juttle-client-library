@@ -1,7 +1,7 @@
 # Change Log
 This file documents all notable changes to juttle-client-library. The release numbering uses [semantic versioning](http://semver.org).
 
-## Unreleased Changes
+## 0.7.0
 
 ### Major Changes
 - Removed outside Juttle class from api. Now you have to pass juttleServiceHost to view and index when you instantiate them. Also remove describe method from base import (use `describe` inside JuttleServiceHttp). [#64](https://github.com/juttle/juttle-client-library/pull/64)
