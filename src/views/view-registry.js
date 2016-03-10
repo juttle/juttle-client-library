@@ -9,6 +9,7 @@ const VIEW_REGISTRY = {
     piechart: JuttleViz.Piechart,
     scatterchart: JuttleViz.Scatterchart,
     less: JuttleViz.Less,
+    markdown: JuttleViz.Markdown,
     events: JuttleViz.Events,
     file: JuttleViz.File,
     timechartvizjs: JuttleViz.TimechartVizJs
