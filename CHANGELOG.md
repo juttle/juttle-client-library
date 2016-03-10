@@ -5,12 +5,14 @@ This file documents all notable changes to juttle-client-library. The release nu
 
 ### Major Changes
 - Removed outside Juttle class from api. Now you have to pass juttleServiceHost to view and index when you instantiate them. Also remove describe method from base import (use `describe` inside JuttleServiceHttp). [#64](https://github.com/juttle/juttle-client-library/pull/64)
+- Bump juttle-viz version to 0.6.0 (includes new `markdown` view) [[#78](https://github.com/juttle/juttle-client-library/pull/78)]
 
 ### Minor Changes
 - Change job-manager status to `CONNECTING`, `RUNNING` and `STOPPED`. Add subscribable `job-status` event to `job-manager` and `View` class. [#62](https://github.com/juttle/juttle-client-library/pull/62)
 - `job-manager`- close websocket when `job_end` message is received from juttle-service [#67](https://github.com/juttle/juttle-client-library/pull/67)
 - Add `getStatus` function to Views Class exported from `Views`. `ViewStatus` is exactly the same thing as `JobStatus` and is exported from `Views`.
 [#70](https://github.com/juttle/juttle-client-library/pull/70)
+- inputs with `items` option: support array of Strings [[#75](https://github.com/juttle/juttle-client-library/issues/75)]
 
 ### Bug Fixes
 - Fix offsetWidth undefined error on window resize.
