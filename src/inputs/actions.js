@@ -54,12 +54,13 @@ export let endUpdateInputValue = () => {
 export function updateInputValue(input_id, value) {
     return (dispatch, getState) => {
         return Promise.try(() => {
-            dispatch(beginUpdateInputValue());
             let currentInput = _.findWhere(getState().inputs, { id: input_id });
 
             if (currentInput.value === value) {
                 return;
             }
+
+            dispatch(beginUpdateInputValue());
 
             let api = new JuttleServiceHttp(getState().juttleServiceUrl);
             return api.getInputs(getState().bundle, Object.assign({}, getValuesFromInputs(getState().inputs), {

@@ -73,5 +73,27 @@ describe('Action Creators', () => {
                 expect(store.getActions()).to.deep.equal(expectedActions);
             });
         });
+
+        it('value did not change', () => {
+            const juttleServiceUrl = 'http://localhost:3000';
+            const bundle = {
+                program: 'input a: text; emit -limit 1'
+            };
+
+            const store = mockStore({
+                juttleServiceUrl: juttleServiceUrl,
+                bundle,
+                inputs: [
+                    {
+                        id: 'a',
+                        value: 'ORIGINAL_VALUE'
+                    }
+                ]
+            });
+
+            return store.dispatch(ActionCreators.updateInputValue('a', 'ORIGINAL_VALUE')).then(() => {
+                expect(store.getActions()).length.to.be.empty;
+            });
+        });
     });
 });
