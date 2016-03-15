@@ -1,6 +1,7 @@
 import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import nock from 'nock';
+import { expect } from 'chai';
 
 import * as ActionCreators from '../../src/inputs/actions';
 
@@ -9,13 +10,13 @@ const mockStore = configureStore(middlewares);
 
 describe('Action Creators', () => {
     describe('updateInputValue', () => {
-        it('value changed', (done) => {
+        it('value changed', () => {
             const juttleServiceUrl = 'http://localhost:3000';
             const bundle = {
                 program: 'input a: text; input b: dropdown -items [{value: 1, label: \'one\'}, {value: 2, label: a}]; emit -limit 1'
             };
 
-            const getState = {
+            const store = mockStore({
                 juttleServiceUrl: juttleServiceUrl,
                 bundle,
                 inputs: [
@@ -28,7 +29,7 @@ describe('Action Creators', () => {
                         value: null
                     }
                 ]
-            };
+            });
 
             let mockResponseBody = [
                 {
@@ -67,8 +68,10 @@ describe('Action Creators', () => {
             })
             .reply(200, mockResponseBody);
 
-            const store = mockStore(getState, expectedActions, done);
-            store.dispatch(ActionCreators.updateInputValue('a', 'new value for a'));
+
+            return store.dispatch(ActionCreators.updateInputValue('a', 'new value for a')).then(() => {
+                expect(store.getActions()).to.deep.equal(expectedActions);
+            });
         });
     });
 });

@@ -1,4 +1,5 @@
 import JuttleServiceHttp from '../utils/http-api';
+import Promise from 'bluebird';
 import _ from 'underscore';
 
 export const CLEAR_INPUTS = 'CLEAR_INPUTS';
@@ -52,20 +53,22 @@ export let endUpdateInputValue = () => {
 
 export function updateInputValue(input_id, value) {
     return (dispatch, getState) => {
-        dispatch(beginUpdateInputValue());
-        let currentInput = _.findWhere(getState().inputs, { id: input_id });
+        return Promise.try(() => {
+            dispatch(beginUpdateInputValue());
+            let currentInput = _.findWhere(getState().inputs, { id: input_id });
 
-        if (currentInput.value === value) {
-            return;
-        }
+            if (currentInput.value === value) {
+                return;
+            }
 
-        let api = new JuttleServiceHttp(getState().juttleServiceUrl);
-        api.getInputs(getState().bundle, Object.assign({}, getValuesFromInputs(getState().inputs), {
-            [input_id]: value
-        }))
-        .then((inputs) => {
-            dispatch(updateInputDefs(inputs));
-            dispatch(endUpdateInputValue());
+            let api = new JuttleServiceHttp(getState().juttleServiceUrl);
+            return api.getInputs(getState().bundle, Object.assign({}, getValuesFromInputs(getState().inputs), {
+                [input_id]: value
+            }))
+            .then((inputs) => {
+                dispatch(updateInputDefs(inputs));
+                dispatch(endUpdateInputValue());
+            });
         });
     };
 }
