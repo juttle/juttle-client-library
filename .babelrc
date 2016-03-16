@@ -1,4 +1,8 @@
 {
-    "plugins": ["transform-class-properties", "babel-plugin-add-module-exports"],
+    "plugins": [
+        "transform-class-properties",
+        "babel-plugin-add-module-exports",
+        "transform-object-assign"
+    ],
     "presets": ["react", "es2015"]
 }
