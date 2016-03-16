@@ -1,6 +1,14 @@
 # Change Log
 This file documents all notable changes to juttle-client-library. The release numbering uses [semantic versioning](http://semver.org).
 
+## 0.7.1
+
+### Bug Fixes
+- babel: add Object.assign plugin to support older browsers
+[#82](https://github.com/juttle/juttle-client-library/pull/82)
+- updateInputValue: fix handling of situation when value hasn't changed [#81](https://github.com/juttle/juttle-client-library/pull/81)
+  - fixes [juttle/juttle-engine#88](https://github.com/juttle/juttle-engine/issues/88)
+
 ## 0.7.0
 
 ### Major Changes
