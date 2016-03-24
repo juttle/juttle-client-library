@@ -34,7 +34,7 @@ export default class View extends EventTarget {
 
         return this._jobManager.start(bundle, inputValues, addDebugLogs)
         .then(res => {
-            let juttleViews = juttleViewGen(res.views);
+            let juttleViews = juttleViewGen(res.views, res.juttleEnv);
             let viewLayout = viewLayoutGen(res.views);
 
             ReactDOM.render(

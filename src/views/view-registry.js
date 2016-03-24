@@ -4,6 +4,7 @@ const VIEW_REGISTRY = {
     barchart: JuttleViz.Barchart,
     text: JuttleViz.Text,
     timechart: JuttleViz.Timechart,
+    highchart: JuttleViz.Highchart,
     table: JuttleViz.Table,
     tile: JuttleViz.Tile,
     piechart: JuttleViz.Piechart,

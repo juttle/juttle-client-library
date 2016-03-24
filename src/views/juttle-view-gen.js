@@ -3,16 +3,14 @@ import _ from 'underscore';
 import ViewRegistry from './view-registry';
 import errors from '../utils/errors';
 
-export default (views) => {
+export default (views, juttleEnv) => {
     let juttleViews = {};
     views.forEach(view => {
         var juttleViewConstructorOptions = {
             params: _.omit(view.options, '_jut_time_bounds'),
             _jut_time_bounds: view.options._jut_time_bounds,
             type: view.type,
-            juttleEnv: {
-                now: new Date()
-            }
+            juttleEnv: juttleEnv
         };
 
         let ViewConstructor = ViewRegistry[view.type];

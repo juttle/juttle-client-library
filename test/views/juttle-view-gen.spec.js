@@ -26,7 +26,7 @@ describe('test view component generator', () => {
                     '_jut_time_bounds': []
                 }
             }
-        ]);
+        ], { now: new Date(1000) });
 
         expect(_.values(components).length).to.equal(2);
     });
@@ -39,7 +39,7 @@ describe('test view component generator', () => {
                 options: {
                     'unknown_option': true
                 }
-            }]);
+            }], { now: new Date(1000) });
         } catch (err) {
             expect(err.code).to.equal('JUTTLE-VIEW-PARAMS-INVALID');
             expect(err.message).to.have.string('"timechart" has invalid parameters:');

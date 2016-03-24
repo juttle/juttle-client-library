@@ -5,13 +5,13 @@ class View extends Component {
         switch (msg.type) {
 
             case 'points':
-                this.props.juttleView.consume(msg.points);
+                this.props.juttleView.consume(msg.data);
                 break;
             case 'mark':
-                this.props.juttleView.consume_mark(msg.time);
+                this.props.juttleView.consume_mark(msg.data);
                 break;
             case 'tick':
-                this.props.juttleView.consume_tick(msg.time);
+                this.props.juttleView.consume_tick(msg.data);
                 break;
             case 'view_end':
                 this.props.juttleView.consume_eof();

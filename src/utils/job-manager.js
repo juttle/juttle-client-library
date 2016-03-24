@@ -53,7 +53,8 @@ export default class JobManager extends EventTarget {
                     self._socket.onmessage = self._onMessage;
                     resolve({
                         job_id: job.job_id,
-                        views: msg.views
+                        views: msg.views,
+                        juttleEnv: msg.juttleEnv
                     });
                 };
             });
