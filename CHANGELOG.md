@@ -1,6 +1,15 @@
 # Change Log
 This file documents all notable changes to juttle-client-library. The release numbering uses [semantic versioning](http://semver.org).
 
+## 0.8.0
+
+### Major Changes
+- Make compatible with juttle-service@0.5.0 [[d9cdb98](https://github.com/juttle/juttle-client-library/pull/84/commits/d9cdb985087b6f48f301207e9dfe8f3f103e5496)]
+- Update juttle-viz to 0.7.0, add highchart view [[056b2db](https://github.com/juttle/juttle-client-library/pull/84/commits/056b2dba5d5a2bf2e21e5a3fd92d7d7d6dce99c0)]
+
+### Bug Fixes
+- Use juttleEnv from juttle-service when instantiating views [[a66a0aa](https://github.com/juttle/juttle-client-library/pull/84/commits/a66a0aa9ab26c0849a4c1ae8d6a6e8e292e9adb0)]
+
 ## 0.7.1
 
 ### Bug Fixes
